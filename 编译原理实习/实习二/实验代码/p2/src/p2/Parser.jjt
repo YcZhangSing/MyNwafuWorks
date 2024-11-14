@@ -1,0 +1,245 @@
+/**
+ * JJTree template file created by SF JavaCC plugin 1.5.28+ wizard for JavaCC 1.5.0+
+ */options{  static = true;}PARSER_BEGIN(Parser)package p2;
+import java.io.*;
+public class Parser{  public static void main(String args [])  {
+    System.out.println("Reading from file input...");
+    String inputpath ="src/p2/testinput1";
+    String outputpath ="src/p2/output";
+    InputStream fin = null;
+    FileWriter fw =null;
+    try {
+		fin =new FileInputStream(inputpath);
+	} catch (FileNotFoundException e1) {
+		// TODO 自动生成的 catch 块
+		e1.printStackTrace();
+	}
+		try {
+			fw = new FileWriter(outputpath, true);
+		} catch (IOException e1) {
+			// TODO 自动生成的 catch 块
+			e1.printStackTrace();
+		}
+	PrintWriter pw = new PrintWriter(fw);
+	pw.print(inputpath+"的语法分析结果：\n");
+	pw.flush();
+	MyNewGrammar YF = new MyNewGrammar (fin);
+    try
+    {
+	  SimpleNode n = YF.Start();
+	  String res = n.dump("");
+	  //
+	  System.out.println("返回的结果:\n"+res);
+	  //
+	  pw.print(res);
+	  pw.flush(); 
+      pw.close();
+      fin.close();
+    }
+    catch (Exception e)
+    {
+      System.out.println("Oops.");
+      System.out.println(e.getMessage());
+    }
+    System.out.println("Analysis done! Please check it in file output.");
+  }}PARSER_END(Parser)
+SKIP :
+{
+  " "
+| "\t"
+| "\n"
+| "\r"
+| < "//" (~[ "\n", "\r" ])*
+    (
+      "\n"
+    | "\r"
+    | "\r\n"
+    ) >
+| < "/*" (~[ "*" ])* "*"
+    (
+      ~[ "/" ] (~[ "*" ])* "*"
+    )*
+    "/" >
+}
+
+TOKEN : /* LITERALS */
+{
+  < INTEGER_LITERAL :
+    < DECIMAL_LITERAL > ([ "l", "L" ])?
+  | < HEX_LITERAL > ([ "l", "L" ])?
+  | < OCTAL_LITERAL > ([ "l", "L" ])? 
+    >
+| < #DECIMAL_LITERAL : [ "1"-"9" ] ([ "0"-"9" ])* >
+| < #HEX_LITERAL : "0" [ "x", "X" ] ([ "0"-"9", "a"-"f", "A"-"F" ])+ >
+| < #OCTAL_LITERAL : "0" ([ "0"-"7" ])* >
+}
+
+TOKEN:/*KERWORDS*/
+{
+	< IF : "if">
+|   < ELSE : "else">
+|   < INT : "int">
+|   < RETURN : "return">
+|   < VOID : "void">
+|   < WHILE : "while">
+| < CHAR:"char" >
+| < FLOAT:"float" >
+| < DOUBLE:"double" >
+| < MAIN:"main" >
+| < FOR:"for" >
+ }
+
+TOKEN : /* IDENTIFIERS */
+{
+  < IDENTIFIER :
+    < LETTER >
+    (
+      < LETTER >
+    | < DIGIT >
+    )* >
+| < #LETTER : [ "_", "a"-"z", "A"-"Z" ] >
+| < #DIGIT : [ "0"-"9" ] >
+}
+
+TOKEN:/*SPARATER*/
+{
+  < COMMA:"," >
+| < SEM : ";">
+|   < LFBRACKET:"{" >
+|   < RFBRACKET:"}" >
+|   < LBRACKET:"[" >
+|   < RBRACKET:"]" >
+|   < LRBRACKET:"(" >
+|   < RRBRACKET:")" >
+}
+TOKEN :/*OPERATOR*/
+{
+	< ADD:"+" >
+| < MUL:"*" >
+	| < MINUS:"-" >
+	| < DIVISOR:"/" >
+	| < LESSTHAN:"<" >
+	| < GREATERTHAN:">" >
+	| < EQUAL:"=" >
+}
+
+
+SimpleNode Start() :
+{}
+{
+	("int"|"void")"main""("")""{"(SentenceBlock())*"}"
+	{
+		return jjtThis;
+	}
+	//("int"|"void")"main""("")""{"(SentenceBlock())*"}"
+}
+
+void SentenceBlock():
+{}
+{
+	Sentence()
+| "{"(SentenceBlock())*"}"
+
+}
+
+void Sentence():
+{}
+{
+  shunxu()|tiaojianyuju()|xunhuan()
+}
+
+void shunxu():
+{}
+{
+	(shengming()|fuzhi())";"
+}
+void shengming():
+{}
+{
+	("int"|"double"|"float"|"char")Identifier()(","Identifier())*
+
+}
+
+void fuzhi():
+{}
+{
+	< IDENTIFIER > "="biaodashi()
+}
+void tiaojianyuju():
+{}
+{
+	"if""("tiaojian()")"SentenceBlock()
+}
+void xunhuan():
+{}
+{
+	"while""("tiaojian()")"SentenceBlock()
+}
+void tiaojian():
+{}
+{
+	biaodashi()guanxifu()biaodashi()
+	
+}
+void biaodashi():
+{ }
+{
+	Expression()
+}
+void guanxifu():
+{}
+{
+	"<"|">"|"="|"<="|">="|"=="|"!="
+}
+void Expression() :
+{}
+{
+  AdditiveExpression()
+}
+
+void AdditiveExpression() :
+{}
+{
+  MultiplicativeExpression()
+  (
+    (
+      "+"
+    | "-"
+    )
+    MultiplicativeExpression()
+  )*
+}
+
+void MultiplicativeExpression() :
+{}
+{
+  UnaryExpression()
+  (
+    (
+      "*"
+    | "/"
+    | "%"
+    )
+    UnaryExpression()
+  )*
+}
+
+void UnaryExpression() :
+{}
+{
+  "(" Expression() ")"
+| Identifier()
+| Integer()
+}
+
+void Identifier() :
+{}
+{
+  < IDENTIFIER >
+}
+
+void Integer() :
+{}
+{
+  < INTEGER_LITERAL >
+}

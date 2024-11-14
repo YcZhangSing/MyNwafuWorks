@@ -1,0 +1,361 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<TITLE>BNF for MyNewGrammar.jjt </TITLE>
+</HEAD>
+<BODY>
+<H1 ALIGN=CENTER>BNF for MyNewGrammar.jjt </H1>
+<H2 ALIGN=CENTER>TOKENS</H2>
+<TABLE>
+ <!-- Token -->
+ <TR>
+  <TD>
+   <PRE>
+&lt;DEFAULT&gt; SKIP : {
+" "
+| "\t"
+| "\n"
+| "\r"
+| &lt;"//" (~["\n","\r"])* ("\n" | "\r" | "\r\n")&gt;
+| &lt;"/*" (~["*"])* "*" (~["/"] (~["*"])* "*")* "/"&gt;
+}
+
+   </PRE>
+  </TD>
+ </TR>
+ <!-- Token -->
+ <TR>
+  <TD>
+   <PRE>
+&lt;DEFAULT&gt; TOKEN : {
+&lt;INTEGER_LITERAL: &lt;DECIMAL_LITERAL&gt; (["l","L"])? | &lt;HEX_LITERAL&gt; (["l","L"])? | &lt;OCTAL_LITERAL&gt; (["l","L"])?&gt;
+| &lt;#DECIMAL_LITERAL: ["1"-"9"] (["0"-"9"])*&gt;
+| &lt;#HEX_LITERAL: "0" ["x","X"] (["0"-"9","a"-"f","A"-"F"])+&gt;
+| &lt;#OCTAL_LITERAL: "0" (["0"-"7"])*&gt;
+}
+
+   </PRE>
+  </TD>
+ </TR>
+ <!-- Token -->
+ <TR>
+  <TD>
+   <PRE>
+&lt;DEFAULT&gt; TOKEN : {
+&lt;IF: "if"&gt;
+| &lt;ELSE: "else"&gt;
+| &lt;INT: "int"&gt;
+| &lt;RETURN: "return"&gt;
+| &lt;VOID: "void"&gt;
+| &lt;WHILE: "while"&gt;
+| &lt;CHAR: "char"&gt;
+| &lt;FLOAT: "float"&gt;
+| &lt;DOUBLE: "double"&gt;
+| &lt;MAIN: "main"&gt;
+| &lt;FOR: "for"&gt;
+| &lt;FEI: "!"&gt;
+| &lt;HUO: "||"&gt;
+| &lt;YU: "&amp;&amp;"&gt;
+| &lt;SWITCH: "switch"&gt;
+| &lt;CASE: "case"&gt;
+| &lt;MINIDEFAULT: "default"&gt;
+| &lt;DO: "do"&gt;
+}
+
+   </PRE>
+  </TD>
+ </TR>
+ <!-- Token -->
+ <TR>
+  <TD>
+   <PRE>
+&lt;DEFAULT&gt; TOKEN : {
+&lt;IDENTIFIER: &lt;LETTER&gt; (&lt;LETTER&gt; | &lt;DIGIT&gt;)*&gt;
+| &lt;#LETTER: ["_","a"-"z","A"-"Z"]&gt;
+| &lt;#DIGIT: ["0"-"9"]&gt;
+}
+
+   </PRE>
+  </TD>
+ </TR>
+ <!-- Token -->
+ <TR>
+  <TD>
+   <PRE>
+&lt;DEFAULT&gt; TOKEN : {
+&lt;COMMA: ","&gt;
+| &lt;SEM: ";"&gt;
+| &lt;LFBRACKET: "{"&gt;
+| &lt;RFBRACKET: "}"&gt;
+| &lt;LBRACKET: "["&gt;
+| &lt;RBRACKET: "]"&gt;
+| &lt;LRBRACKET: "("&gt;
+| &lt;RRBRACKET: ")"&gt;
+}
+
+   </PRE>
+  </TD>
+ </TR>
+ <!-- Token -->
+ <TR>
+  <TD>
+   <PRE>
+&lt;DEFAULT&gt; TOKEN : {
+&lt;ADD: "+"&gt;
+| &lt;MUL: "*"&gt;
+| &lt;MINUS: "-"&gt;
+| &lt;DIVISOR: "/"&gt;
+| &lt;LESSTHAN: "&lt;"&gt;
+| &lt;GREATERTHAN: "&gt;"&gt;
+| &lt;EQUAL: "="&gt;
+}
+
+   </PRE>
+  </TD>
+ </TR>
+ <!-- Token -->
+ <TR>
+  <TD>
+   <PRE>
+&lt;DEFAULT&gt; TOKEN : {
+&lt;FLOAT_LITERAL: &lt;DECIMAL_LITERAL&gt; ("." &lt;DECIMAL_LITERAL&gt;)?&gt;
+}
+
+   </PRE>
+  </TD>
+ </TR>
+</TABLE>
+<H2 ALIGN=CENTER>NON-TERMINALS</H2>
+<TABLE>
+ <!-- Special token -->
+ <TR>
+  <TD>
+<PRE>
+/////////////////////////////////////////////////////////语法语义分析//////////////////////////////////////////////////////////////////
+</PRE>
+  </TD>
+ </TR>
+<TR>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod1">Start</A></TD>
+<TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE>( "int" | "void" ) "main" "(" ")" "{" ( <A HREF="#prod2">SentenceBlock</A> )* "}"</TD>
+</TR>
+<TR>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod2">SentenceBlock</A></TD>
+<TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE><A HREF="#prod3">Sentence</A></TD>
+</TR>
+<TR>
+<TD ALIGN=RIGHT VALIGN=BASELINE></TD>
+<TD ALIGN=CENTER VALIGN=BASELINE>|</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE><A HREF="#prod4">Returnstatment</A></TD>
+</TR>
+<TR>
+<TD ALIGN=RIGHT VALIGN=BASELINE></TD>
+<TD ALIGN=CENTER VALIGN=BASELINE>|</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE>"{" ( <A HREF="#prod2">SentenceBlock</A> )* "}"</TD>
+</TR>
+<TR>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod3">Sentence</A></TD>
+<TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE><A HREF="#prod5">shunxu</A></TD>
+</TR>
+<TR>
+<TD ALIGN=RIGHT VALIGN=BASELINE></TD>
+<TD ALIGN=CENTER VALIGN=BASELINE>|</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE><A HREF="#prod6">tiaojianyuju</A></TD>
+</TR>
+<TR>
+<TD ALIGN=RIGHT VALIGN=BASELINE></TD>
+<TD ALIGN=CENTER VALIGN=BASELINE>|</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE><A HREF="#prod7">xunhuan</A></TD>
+</TR>
+<TR>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod5">shunxu</A></TD>
+<TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE>( ( <A HREF="#prod8">shengming</A> | ( <A HREF="#prod9">fuzhi</A> | <A HREF="#prod10">zizeng</A> ) ) ";" | <A HREF="#prod11">SwitchCase</A> )</TD>
+</TR>
+<TR>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod8">shengming</A></TD>
+<TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE>( "int" | "double" | "float" | "char" ) <A HREF="#prod12">Identifier</A> ( ( "=" <A HREF="#prod13">biaodashi</A> ) | ( "[" ( <A HREF="#prod14">Integer</A> | <A HREF="#prod12">Identifier</A> ) "]" ( "[" ( <A HREF="#prod14">Integer</A> | <A HREF="#prod12">Identifier</A> ) "]" )? ) )? ( "," <A HREF="#prod12">Identifier</A> ( ( "=" <A HREF="#prod13">biaodashi</A> ) | ( "[" ( <A HREF="#prod14">Integer</A> | <A HREF="#prod12">Identifier</A> ) "]" ( "[" ( <A HREF="#prod14">Integer</A> | <A HREF="#prod12">Identifier</A> ) "]" )? ) )? )*</TD>
+</TR>
+<TR>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod9">fuzhi</A></TD>
+<TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE><A HREF="#prod12">Identifier</A> ( "[" ( <A HREF="#prod14">Integer</A> | <A HREF="#prod12">Identifier</A> ) "]" ( "[" ( <A HREF="#prod14">Integer</A> | <A HREF="#prod12">Identifier</A> ) "]" )? "=" <A HREF="#prod13">biaodashi</A> )? ( ( "=" ( ( <A HREF="#prod12">Identifier</A> "[" ( <A HREF="#prod14">Integer</A> | <A HREF="#prod12">Identifier</A> ) "]" ( "[" ( <A HREF="#prod14">Integer</A> | <A HREF="#prod12">Identifier</A> ) "]" )? ) | ( <A HREF="#prod13">biaodashi</A> ) ) ) | ( "++" ) | ( "--" ) )?</TD>
+</TR>
+<TR>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod10">zizeng</A></TD>
+<TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE>( "++" <A HREF="#prod12">Identifier</A> )</TD>
+</TR>
+<TR>
+<TD ALIGN=RIGHT VALIGN=BASELINE></TD>
+<TD ALIGN=CENTER VALIGN=BASELINE>|</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE>( "--" <A HREF="#prod12">Identifier</A> )</TD>
+</TR>
+<TR>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod6">tiaojianyuju</A></TD>
+<TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE>"if" "(" <A HREF="#prod15">Boolean</A> ")" <A HREF="#prod2">SentenceBlock</A> ( &lt;ELSE&gt; ( <A HREF="#prod2">SentenceBlock</A> ) )?</TD>
+</TR>
+<TR>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod7">xunhuan</A></TD>
+<TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE>( "while" "(" <A HREF="#prod15">Boolean</A> ")" <A HREF="#prod2">SentenceBlock</A> )</TD>
+</TR>
+<TR>
+<TD ALIGN=RIGHT VALIGN=BASELINE></TD>
+<TD ALIGN=CENTER VALIGN=BASELINE>|</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE>( &lt;FOR&gt; &lt;LRBRACKET&gt; ( ( ( "int" )? <A HREF="#prod12">Identifier</A> "=" <A HREF="#prod13">biaodashi</A> )? ";" ) <A HREF="#prod15">Boolean</A> ";" ( <A HREF="#prod10">zizeng</A> | <A HREF="#prod9">fuzhi</A> ) &lt;RRBRACKET&gt; ( ( "{" ( <A HREF="#prod2">SentenceBlock</A> )? "}" ) | ( ";" ) ) )</TD>
+</TR>
+<TR>
+<TD ALIGN=RIGHT VALIGN=BASELINE></TD>
+<TD ALIGN=CENTER VALIGN=BASELINE>|</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE>( &lt;DO&gt; "{" <A HREF="#prod2">SentenceBlock</A> "}" &lt;WHILE&gt; "(" <A HREF="#prod15">Boolean</A> ")" ";" )</TD>
+</TR>
+ <!-- Special token -->
+ <TR>
+  <TD>
+<PRE>
+/*
+布尔表达式的实现
+布尔表达式中有四种运算符，关系符、与、或、非
+> < >= <= != == && || !
+为了实现上述复杂的布尔表达式的翻译，定义了三个语法语义程序
+BaiscBoolean():最简单的布尔表达式即包含非操作的条件表达式
+YuBoolean():与&&结合起来的布尔表达式，由BasicBoolen()+&&组成
+Boolean():或||结合起来的布尔表达式，由YuBoolean()+||组成
+因为运算优先级 rop >! >&& >||
+所以Boolean()即是最后可以匹配布尔表达式是语法
+*/</PRE>
+  </TD>
+ </TR>
+<TR>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod16">BasicBoolean</A></TD>
+<TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE>( ( &lt;FEI&gt; ( &lt;LRBRACKET&gt; <A HREF="#prod17">tiaojian</A> &lt;RRBRACKET&gt; ) ) | ( <A HREF="#prod17">tiaojian</A> ) )</TD>
+</TR>
+<TR>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod18">YuBoolean</A></TD>
+<TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE><A HREF="#prod16">BasicBoolean</A> ( &lt;YU&gt; <A HREF="#prod18">YuBoolean</A> )?</TD>
+</TR>
+<TR>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod15">Boolean</A></TD>
+<TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE><A HREF="#prod18">YuBoolean</A> ( &lt;HUO&gt; <A HREF="#prod15">Boolean</A> )?</TD>
+</TR>
+<TR>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod17">tiaojian</A></TD>
+<TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE><A HREF="#prod13">biaodashi</A> ( <A HREF="#prod19">guanxifu</A> <A HREF="#prod13">biaodashi</A> )?</TD>
+</TR>
+ <!-- Special token -->
+ <TR>
+  <TD>
+<PRE>
+/*
+switch-case
+
+switch(expression)
+{
+  case value1:
+  		XXX;
+  		break;
+  case value2:
+  		XXX;
+  		break;
+  default:
+		XXX;
+}
+
+*/</PRE>
+  </TD>
+ </TR>
+<TR>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod11">SwitchCase</A></TD>
+<TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE>&lt;SWITCH&gt; "(" <A HREF="#prod20">Expression</A> ")" "{" ( &lt;CASE&gt; &lt;INTEGER_LITERAL&gt; ":" <A HREF="#prod2">SentenceBlock</A> )* ( &lt;MINIDEFAULT&gt; ":" <A HREF="#prod2">SentenceBlock</A> ) "}"</TD>
+</TR>
+<TR>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod19">guanxifu</A></TD>
+<TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE>( "&lt;" | "&gt;" | "=" | "&lt;=" | "&gt;=" | "==" | "!=" )</TD>
+</TR>
+ <!-- Special token -->
+ <TR>
+  <TD>
+<PRE>
+//ConditionValue tiaojian() :
+//{}
+//{
+//  biaodashi() guanxifu() biaodashi()
+//}
+</PRE>
+  </TD>
+ </TR>
+<TR>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod13">biaodashi</A></TD>
+<TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE><A HREF="#prod20">Expression</A></TD>
+</TR>
+<TR>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod20">Expression</A></TD>
+<TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE><A HREF="#prod21">AdditiveExpression</A></TD>
+</TR>
+<TR>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod21">AdditiveExpression</A></TD>
+<TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE><A HREF="#prod22">MultiplicativeExpression</A> ( ( "+" | "-" ) <A HREF="#prod22">MultiplicativeExpression</A> )*</TD>
+</TR>
+<TR>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod22">MultiplicativeExpression</A></TD>
+<TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE><A HREF="#prod23">UnaryExpression</A> ( ( "*" | "/" | "%" ) <A HREF="#prod23">UnaryExpression</A> )*</TD>
+</TR>
+<TR>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod23">UnaryExpression</A></TD>
+<TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE>"(" <A HREF="#prod20">Expression</A> ")"</TD>
+</TR>
+<TR>
+<TD ALIGN=RIGHT VALIGN=BASELINE></TD>
+<TD ALIGN=CENTER VALIGN=BASELINE>|</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE><A HREF="#prod12">Identifier</A></TD>
+</TR>
+<TR>
+<TD ALIGN=RIGHT VALIGN=BASELINE></TD>
+<TD ALIGN=CENTER VALIGN=BASELINE>|</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE><A HREF="#prod14">Integer</A></TD>
+</TR>
+<TR>
+<TD ALIGN=RIGHT VALIGN=BASELINE></TD>
+<TD ALIGN=CENTER VALIGN=BASELINE>|</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE><A HREF="#prod24">Float</A></TD>
+</TR>
+<TR>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod12">Identifier</A></TD>
+<TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE>&lt;IDENTIFIER&gt;</TD>
+</TR>
+<TR>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod14">Integer</A></TD>
+<TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE>&lt;INTEGER_LITERAL&gt;</TD>
+</TR>
+<TR>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod4">Returnstatment</A></TD>
+<TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE>&lt;RETURN&gt; <A HREF="#prod13">biaodashi</A> ";"</TD>
+</TR>
+<TR>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod24">Float</A></TD>
+<TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE>&lt;FLOAT_LITERAL&gt;</TD>
+</TR>
+</TABLE>
+</BODY>
+</HTML>

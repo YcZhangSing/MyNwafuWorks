@@ -1,0 +1,12 @@
+void main()
+{
+	int q=0;
+
+	do
+	{
+		q=q+1;
+	}
+	while(q<3);
+	
+	return 0;
+}

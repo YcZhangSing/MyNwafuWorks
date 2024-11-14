@@ -1,0 +1,1177 @@
+/**
+ * JJTree template file created by SF JavaCC plugin 1.5.28+ wizard for JavaCC 1.5.0+
+ */
+options
+{
+  static = false;
+}
+
+PARSER_BEGIN(MyNewGrammar)
+package miniC;
+import Util.*;
+import java.io.*;
+
+public class MyNewGrammar
+{
+  //定义一个QTList< >列表
+  public QTList qtlist = new QTList();
+
+  public SwitchHDL shdl = new SwitchHDL();
+
+  //定义一个数组列表
+  public ArrayMap arrmap = new ArrayMap();
+
+  public VariableMap varmap = new VariableMap();
+
+  //输出四元式
+  public String printQTTable()
+  {
+    return qtlist.printQTTable();
+  }
+
+  //输出定义的符号表
+  public String printCharTable()
+  {
+    String res = "\nVariableTable:< VariableName, VariableType>";
+    res += varmap.toString();
+    return res;
+  }
+
+  public static void main(String args [])
+  {
+    System.out.println("Reading from file input...");
+    String inputpath = "src/miniC/test_switchcase";
+    String outputpath = "src/miniC/output";
+    InputStream fin = null;
+    FileWriter fw = null;
+    try
+    {
+      fin = new FileInputStream(inputpath);
+    }
+    catch (FileNotFoundException e1)
+    {
+      // TODO 自动生成的 catch 块
+      System.out.println("\uff01\uff01\uff01");
+      e1.printStackTrace();
+    }
+    try
+    {
+      fw = new FileWriter(outputpath, true);
+    }
+    catch (IOException e1)
+    {
+      // TODO 自动生成的 catch 块
+      System.out.println("\uff01\uff01\uff01");
+      e1.printStackTrace();
+    }
+    PrintWriter pw = new PrintWriter(fw);
+    pw.print(inputpath + "\u7684\u8bed\u6cd5\u5206\u6790\u7ed3\u679c\uff1a\n");
+    pw.flush();
+    MyNewGrammar YF = new MyNewGrammar(fin);
+    try
+    {
+      SimpleNode n = YF.Start();
+      String res = n.dump("");
+      //
+      //System.out.println("返回的结果:\n" + res);
+      //
+      res += "\n\u56db\u5143\u5f0f\u5982\u4e0b:\n";
+      res += YF.printQTTable(); //四元式
+      res += YF.printCharTable(); //变量符号表
+      pw.print(res);
+      pw.flush();
+      pw.close();
+      fin.close();
+    }
+    catch (Exception e)
+    {
+      System.out.println("Oops.");
+      System.out.println("\u51fa\u9519\u4e86\n" + e.getMessage());
+    }
+    System.out.println("Analysis done! Please check it in file output.");
+  }
+}
+
+PARSER_END(MyNewGrammar)
+
+SKIP :
+{
+  " "
+| "\t"
+| "\n"
+| "\r"
+| < "//" (~[ "\n", "\r" ])*
+    (
+      "\n"
+    | "\r"
+    | "\r\n"
+    ) >
+| < "/*" (~[ "*" ])* "*"
+    (
+      ~[ "/" ] (~[ "*" ])* "*"
+    )*
+    "/" >
+}
+
+TOKEN : /* LITERALS */
+{
+  < INTEGER_LITERAL :
+    < DECIMAL_LITERAL > ([ "l", "L" ])?
+  | < HEX_LITERAL > ([ "l", "L" ])?
+  | < OCTAL_LITERAL > ([ "l", "L" ])? 
+  >
+| < #DECIMAL_LITERAL : [ "1"-"9" ] ([ "0"-"9" ])* >
+| < #HEX_LITERAL : "0" [ "x", "X" ] ([ "0"-"9", "a"-"f", "A"-"F" ])+ >
+| < #OCTAL_LITERAL : "0" ([ "0"-"7" ])* >
+}
+
+TOKEN : /*KERWORDS*/
+{
+  < IF : "if" >
+| < ELSE : "else" >
+| < INT : "int" >
+| < RETURN : "return" >
+| < VOID : "void" >
+| < WHILE : "while" >
+| < CHAR : "char" >
+| < FLOAT : "float" >
+| < DOUBLE : "double" >
+| < MAIN : "main" >
+| < FOR : "for" >
+| < FEI : "!" >
+| < HUO : "||" >
+| < YU : "&&" >
+| < SWITCH : "switch" >
+| < CASE : "case" >
+| < MINIDEFAULT : "default" >
+| < DO : "do" >
+}
+
+TOKEN : /* IDENTIFIERS */
+{
+  < IDENTIFIER :
+    < LETTER >
+    (
+      < LETTER >
+    | < DIGIT >
+    )* >
+| < #LETTER : [ "_", "a"-"z", "A"-"Z" ] >
+| < #DIGIT : [ "0"-"9" ] >
+}
+
+TOKEN : /*SPARATER*/
+{
+  < COMMA : "," >
+| < SEM : ";" >
+| < LFBRACKET : "{" >
+| < RFBRACKET : "}" >
+| < LBRACKET : "[" >
+| < RBRACKET : "]" >
+| < LRBRACKET : "(" >
+| < RRBRACKET : ")" >
+}
+
+TOKEN : /*OPERATOR*/
+{
+  < ADD : "+" >
+| < MUL : "*" >
+| < MINUS : "-" >
+| < DIVISOR : "/" >
+| < LESSTHAN : "<" >
+| < GREATERTHAN : ">" >
+| < EQUAL : "=" >
+}
+
+TOKEN : /* FLOAT */
+{
+  < FLOAT_LITERAL : 
+    < DECIMAL_LITERAL > ("." < DECIMAL_LITERAL >)? 
+  >
+}
+
+/////////////////////////////////////////////////////////语法语义分析//////////////////////////////////////////////////////////////////
+SimpleNode Start() :
+{}
+{
+  (
+    "int"
+  | "void"
+  )
+  "main" "(" ")" "{"
+  (
+    SentenceBlock()
+  )*
+  "}"
+  {
+    return jjtThis;
+  }
+  //("int"|"void")"main""("")""{"(SentenceBlock())*"}"
+}
+
+void SentenceBlock() :
+{}
+{
+  Sentence()
+| Returnstatment()
+| "{"
+  (
+    SentenceBlock()
+  )*
+  "}"
+}
+
+void Sentence() :
+{}
+{
+  shunxu()
+| tiaojianyuju()
+| xunhuan()
+}
+
+void shunxu() :
+{}
+{
+  (
+    (
+      shengming()
+    |
+      (
+        LOOKAHEAD(2)
+        fuzhi()
+      | 
+        zizeng()
+      )
+    )
+    ";"
+  | 
+    SwitchCase()
+  )
+}
+
+void shengming() :
+{
+  String arg1 = null;
+  String result = null;
+  String raw = ""+ 1;
+  String col = ""+ 1;
+  Token type = null;
+}
+{
+  (
+    type = "int"
+  | type = "double"
+  | type = "float"
+  | type = "char"
+  )
+  result = Identifier() //int a=12;
+  {
+    if (varmap.Variablecontains(result))
+    {
+      System.out.println("ERR! The Variable," + result + ", has already been defined and you CAN NOT declare it again...");
+    }
+    else
+    {
+      varmap.addVariable(type.image, result);
+      //加入符号表
+    }
+  }
+  (
+    (
+      "=" arg1 = biaodashi()
+      {
+        QTInfo qt0 = new QTInfo("=", arg1, "_", result);
+        qtlist.addQTInfo(qt0);
+      }
+    )
+  |
+    (
+      "["
+      {
+        varmap.setarr(result, 1);
+      }
+      (
+        col = Integer()
+      | col = Identifier()
+      )
+      "]"
+      (
+        "["
+        {
+          varmap.setarr(result, 2);
+        }
+        (
+          raw = Integer()
+        | raw = Identifier()
+        )
+        "]"
+      )?
+      {
+        arrmap.createArray(result, raw, col);
+      }
+    )
+  )?
+  (
+    "," result = Identifier()
+    {
+        {
+    if (varmap.Variablecontains(result))
+    {
+      System.out.println("ERR! The Variable," + result + ", has already been defined and you CAN NOT declare it again...");
+    }
+    else
+    {
+      varmap.addVariable(type.image, result);
+      //加入符号表
+    }
+  }
+      }
+    (
+      (
+        "=" arg1 = biaodashi()
+        {
+          QTInfo qt = new QTInfo("=", arg1, "_", result);
+          qtlist.addQTInfo(qt);
+        }
+      )
+    |
+      (
+        "["
+        (
+          col = Integer()
+        | col = Identifier()
+        )
+        "]"
+        (
+          "["
+          (
+            raw = Integer()
+          | raw = Identifier()
+          )
+          "]"
+        )?
+        {
+          if (!arrmap.createArray(result, raw, col))
+          {
+            System.out.println("\u91cd\u590d\u5b9a\u4e49");
+            throw new Exception();
+          }
+        }
+      )
+    )?
+  )*
+}
+
+void fuzhi() :
+{
+  String arg1 = null;
+  String result = null;
+  String Temp = null;
+  String arrname = null;
+  String T1 = null;
+  String T2 = null;
+  String T3 = null;
+  String acol = ""+ 1;
+  String araw = ""+ 1;
+  String col = ""+ 1;
+  String raw = ""+ 1;
+}
+{
+// result = expression
+result = Identifier()
+		  {
+		    if (!(varmap.Variablecontains(result)))
+		    {
+		      System.out.println("?ERR! The Variable," + result + ", has NOT been defined, it CAN NOT be used as the left value...");
+		    }
+		  }
+		  (
+		    "["
+		    {
+		      acol = arrmap.getcol(result);
+		      araw = arrmap.getraw(result); //获取数组的大小（这里是横向存储的数组）
+		    }
+		    (
+		      col = Integer()
+		    | col = Identifier()
+		    )
+		    "]"
+		    {
+		      QTInfo cqt1 = new QTInfo("j<", col, acol, "OutBounds");
+		      QTInfo cqt2 = new QTInfo("j>", col, "0", "OutBounds");
+		      qtlist.addQTInfo(cqt1);
+		      qtlist.addQTInfo(cqt2);
+		    }
+		    (
+		      "["
+		      (
+		        raw = Integer()
+		      | raw = Identifier()
+		      )
+		      "]"
+		      {
+		        QTInfo rqt1 = new QTInfo("j<", raw, araw, "OutBounds");
+		        QTInfo rqt2 = new QTInfo("j>", raw, "0", "OutBounds");
+		        qtlist.addQTInfo(rqt1);
+		        qtlist.addQTInfo(rqt2);
+		      }
+		    )?
+		    {
+		      System.out.println("\u5230\u6b64\uff01" + result);
+		    }
+		    "=" arg1 = biaodashi()
+		    {
+		      if (!arrmap.containsKey(result))
+		      {
+		        System.out.println("\u6570\u7ec4\u672a\u5b9a\u4e49");
+		        throw new NoSuchFieldException("\u6570\u7ec4\u672a\u5b9a\u4e49\uff01");
+		      }
+		      T1 = VariableNameGenerator.genVariableName();
+		      T2 = VariableNameGenerator.genVariableName();
+		      T3 = VariableNameGenerator.genVariableName();
+		      QTInfo qt1 = new QTInfo("*", col, acol, T1);
+		      QTInfo qt2 = new QTInfo("+", raw, T1, T1);
+		      Temp = String.valueOf(Integer.parseInt(acol) + 1);
+		      QTInfo qt3 = new QTInfo("-", result, Temp, T2);
+		      QTInfo qt4 = new QTInfo("[]=", arg1, "-", T2 + "[" + T1 + "]");
+		      qtlist.addQTInfo(qt1);
+		      qtlist.addQTInfo(qt2);
+		      qtlist.addQTInfo(qt3);
+		      qtlist.addQTInfo(qt4);
+		    }
+		  )?
+		  (
+		    (
+"="
+      (
+        LOOKAHEAD(2)
+        ( //将数组的值赋给标识符“ a = b[1][2]
+		arrname = Identifier() 
+          "["
+          {
+            acol = arrmap.getcol(arrname);
+            araw = arrmap.getraw(arrname); //获取数组的大小（这里是横向存储的数组）
+          }
+          (
+            col = Integer()
+          | col = Identifier()
+          )
+          "]"
+          {
+            QTInfo cqt1 = new QTInfo("j<", col, acol, "OutBounds");
+            QTInfo cqt2 = new QTInfo("j>", col, "0", "OutBounds");
+            qtlist.addQTInfo(cqt1);
+            qtlist.addQTInfo(cqt2);
+          }
+          (
+            "["
+            (
+              raw = Integer()
+            | raw = Identifier()
+            )
+            "]"
+            {
+              QTInfo rqt1 = new QTInfo("j<", raw, araw, "OutBounds");
+              QTInfo rqt2 = new QTInfo("j>", raw, "0", "OutBounds");
+              qtlist.addQTInfo(rqt1);
+              qtlist.addQTInfo(rqt2);
+            }
+          )?
+          {
+            if (!arrmap.containsKey(arrname))
+            {
+              System.out.println("\u6570\u7ec4\u672a\u5b9a\u4e49");
+              throw new NoSuchFieldException("\u6570\u7ec4\u672a\u5b9a\u4e49\uff01");
+            }
+            System.out.println("case 1");
+            T1 = VariableNameGenerator.genVariableName();
+            QTInfo qt1 = new QTInfo("*", col, acol, T1);
+            T2 = VariableNameGenerator.genVariableName();
+            T3 = VariableNameGenerator.genVariableName();
+            QTInfo qt2 = new QTInfo("+", raw, T1, T1);
+            Temp = String.valueOf(Integer.parseInt(acol) + 1);
+            QTInfo qt3 = new QTInfo("-", arrname, Temp, T2);
+            QTInfo qt4 = new QTInfo("=[]", T2 + "[" + T1 + "]", "-", T3);
+            QTInfo qt5 = new QTInfo("=", T3, "-", result); //
+            qtlist.addQTInfo(qt1);
+            qtlist.addQTInfo(qt2);
+            qtlist.addQTInfo(qt3);
+            qtlist.addQTInfo(qt4);
+            qtlist.addQTInfo(qt5);
+          }
+        )
+      |
+        (
+          arg1 = biaodashi()
+          {
+            QTInfo qt = new QTInfo("=", arg1, "_", result);
+            qtlist.addQTInfo(qt);
+          }
+        )
+      )
+    )
+  |
+    (
+      "++"
+      {
+        /*
+      	("+",i,1,T1)
+      	("=",T1,_,i)
+      */
+        Temp = VariableNameGenerator.genVariableName();
+        QTInfo qt01 = new QTInfo("+", result, "1", Temp);
+        QTInfo qt02 = new QTInfo("=", Temp, "_", result);
+        qtlist.addQTInfo(qt01);
+        qtlist.addQTInfo(qt02);
+      }
+    )
+  |
+    (
+      "--"
+      {
+        /*
+      	("-",i,1,T1)
+      	("=",T1,_,i)
+      */
+        Temp = VariableNameGenerator.genVariableName();
+        QTInfo qt00 = new QTInfo("-", result, "1", Temp);
+        QTInfo qt11 = new QTInfo("=", Temp, "_", result);
+        qtlist.addQTInfo(qt00);
+        qtlist.addQTInfo(qt11);
+      }
+    )
+  )?
+}
+
+void zizeng() :
+{
+  String x = null;
+  String Temp = null;
+}
+{
+  (
+    "++" x = Identifier()
+    {
+      /*
+      	("+",i,1,T1)
+      	("=",T1,_,i)
+      */
+      Temp = VariableNameGenerator.genVariableName();
+      QTInfo qt01 = new QTInfo("+", x, "1", Temp);
+      QTInfo qt02 = new QTInfo("=", Temp, "_", x);
+      qtlist.addQTInfo(qt01);
+      qtlist.addQTInfo(qt02);
+    }
+  )
+|
+  (
+    "--" x = Identifier()
+    {
+      /*
+      	("-",i,1,T1)
+      	("=",T1,_,i)
+      */
+      Temp = VariableNameGenerator.genVariableName();
+      QTInfo qt0 = new QTInfo("-", x, "1", Temp);
+      QTInfo qt1 = new QTInfo("=", Temp, "_", x);
+      qtlist.addQTInfo(qt0);
+      qtlist.addQTInfo(qt1);
+    }
+  )
+}
+
+void tiaojianyuju() :
+/*条件语句    if (E) S1 else S2  或者 if (E) S1
+扫描完右括号之后就可以确定真出口；
+扫描完可以暂时确定假出口
+else会产生一个无条件跳转语句
+*/
+{
+  ConditionValue cv = null;
+  Token t = null;
+  int index = 0;
+}
+{
+  "if" "(" cv = Boolean() ")"
+  {
+    cv.backpatchTrueChain(QTInfo.size + 1);
+  }
+  SentenceBlock()
+  (
+    LOOKAHEAD(1) /*防止if else 嵌套导致的冲突*/
+    t = < ELSE >
+    {
+      QTInfo qt = new QTInfo("J", "-", "-", "-");
+      qtlist.addQTInfo(qt);
+      index = QTInfo.size;
+      cv.backpatchFalseChain(index + 1);
+    }
+    (
+      SentenceBlock()
+      {
+        qtlist.setResultbyIndex(index, QTInfo.size);
+      }
+    )
+  )?
+  {
+    if (t == null)
+    {
+      cv.backpatchFalseChain(QTInfo.size + 1);
+    }
+  }
+}
+
+void xunhuan() :
+{
+  int index = 0;
+  ConditionValue cValue = new ConditionValue();
+  String result = null;
+  String arg1 = null;
+  int indexE2 = 0;
+  int indexE3 = 0;
+  Token test=null;
+}
+{
+  ( /*while循环只产生一个四元式即无条件转移四元式，至于循环体内的四元式，不由while产生*/
+    /*
+		while (E) S1;
+		真出口：S1; 即扫描完右括号后便知道真出口的位置。
+		假出口：无条件转移之后
+	*/
+    "while" "("
+    {
+      index = QTInfo.size + 1; //记录进入while循环的四元式位置
+    }
+    cValue = Boolean() 
+    ")" /*扫描完右括号，下一个就是循环体了，循环体的第一句也就是while语句的真出口，
+  	此时利用Boolean()语句返回的cvalue,回填真出口的位置，也就是QTInfo.size+1*/
+    {
+      cValue.backpatchTrueChain(QTInfo.size + 1);
+    }
+    SentenceBlock()
+    /*扫描完循环体语句即SentenceBlock()之后就该生成while的四元式，返回while语句开始的地方，即index四元式*/
+    {
+      QTInfo qt = new QTInfo("j", "_", "_", index);
+      qtlist.addQTInfo(qt);
+      /*假出口在此，while条件为假后就应该跳出while循环了，所以，此时QTInfo.size+1就是假出口的四元式编号了*/
+      cValue.backpatchFalseChain(QTInfo.size + 1);
+    }
+  )
+|
+  (
+    /*
+  For循环的实现
+  for(E1;E2;E3)
+  {
+    S1
+  }
+  	E2的真出口是S1
+  	假出口是S1+1
+  	S1执行完后执行E3
+  	E3无条件跳转到E2
+  */
+    < FOR > 
+    < LRBRACKET >
+    /*E1*/
+    (
+      (
+        (test = "int")? 
+        result = Identifier()
+        {
+          if(test!=null)
+          {
+            varmap.addVariable("int", result);
+          }
+          if (test == null && !(varmap.Variablecontains(result)))
+          {
+            System.out.println("ERR! The Variable," + result + ", has NOT been defined...");
+          }
+        }
+        "=" arg1 = biaodashi()
+        {
+          QTInfo qt0 = new QTInfo("=", arg1, "_", result);
+          qtlist.addQTInfo(qt0);
+        }
+      )?
+      ";"
+    )
+    /*E2*/
+    {
+      indexE2 = QTInfo.size + 1;
+    }
+    cValue = Boolean() 
+    ";"
+    /*E3
+    	执行完此语句之后要进行一个无条件跳转，跳转到E2判断for循环是否为真
+    	(j,_,_,indexE2)
+    */
+    {
+      indexE3 = QTInfo.size + 1; //记录E3的位置
+    }
+    (
+      zizeng()
+    | fuzhi()
+    )
+    {
+      //扫描完E3要跳回E2
+      QTInfo qtE2 = new QTInfo("j", "_", "_", indexE2);
+      qtlist.addQTInfo(qtE2);
+    }
+    < RRBRACKET >
+    {
+      index = QTInfo.size + 1;
+    }
+    /*S1*/
+    (
+      (
+        "{"
+        { /*扫描完 { 就知道for循环的真出口在下一句了，回填biaodashi的cValue的真出口*/
+          cValue.backpatchTrueChain(QTInfo.size + 1);
+        }
+        (
+          SentenceBlock()
+        )?
+        { /*扫描完Senten之后要产生无条件跳转语句，跳转到E3处*/
+          QTInfo qtE3 = new QTInfo("j", "_", "_", indexE3);
+          qtlist.addQTInfo(qtE3);
+        }
+        "}"
+        { /*扫描完 }就知道for循环的假出口在下一句了，回填biaodashi的cValue的假出口*/
+          cValue.backpatchFalseChain(QTInfo.size + 1);
+        }
+      )
+    |
+      (
+        ";"
+        { /*扫描完 ； 就知道for循环的真出口在E3了，回填biaodashi的cValue的真出口*/
+          cValue.backpatchTrueChain(indexE3);
+          cValue.backpatchFalseChain(QTInfo.size + 1);
+        }
+      )
+    )
+  )
+|
+  (
+    /*
+  do { }while(Boolean)循环
+  此结构不产生四元式，只需要回填bool表达式的真假出口即可
+  （j,-,-,start）
+  */
+    < DO > 
+    "{"
+    {
+      index = QTInfo.size + 1;
+    }
+    SentenceBlock() 
+    "}" 
+    < WHILE > 
+    "(" cValue = Boolean() ")" ";"
+    {
+      cValue.backpatchTrueChain(index);
+      cValue.backpatchFalseChain(QTInfo.size + 1);
+    }
+  )
+}
+
+/*
+布尔表达式的实现
+布尔表达式中有四种运算符，关系符、与、或、非
+> < >= <= != == && || !
+为了实现上述复杂的布尔表达式的翻译，定义了三个语法语义程序
+BaiscBoolean():最简单的布尔表达式即包含非操作的条件表达式
+YuBoolean():与&&结合起来的布尔表达式，由BasicBoolen()+&&组成
+Boolean():或||结合起来的布尔表达式，由YuBoolean()+||组成
+因为运算优先级 rop >! >&& >||
+所以Boolean()即是最后可以匹配布尔表达式是语法
+*/
+ConditionValue tiaojian() : /*条件表达式：a<b-- >(<j<,a,b,T) (j<,-,-,F) 真假出口四元式*/
+{
+  String e1 = null;
+  String e2 = null;
+  String r = null;
+  ConditionValue cValue = new ConditionValue();
+}
+{
+  e1 = biaodashi()
+  (
+    r = guanxifu() e2 = biaodashi()
+  )?
+  {
+    if (r == null) /*只有表达式(jnz,e1,-,T)*/
+    {
+      QTInfo qt1 = new QTInfo("jnz", e1, "_", "T");
+      qtlist.addQTInfo(qt1);
+      cValue.mergeTrue(qt1);
+    }
+    else /*(j+r,e1,e2,T)*/
+    {
+      QTInfo qt = new QTInfo("j" + r, e1, e2, "T");
+      qtlist.addQTInfo(qt);
+      cValue.mergeTrue(qt);
+    }
+    /*无论如何都有一个假四元式(j,-,-,F)*/
+    QTInfo qt = new QTInfo("j", "_", "_", "F");
+    qtlist.addQTInfo(qt);
+    cValue.mergeFalse(qt);
+  }
+  {
+    return cValue; /*条件语句要返回一个条件语句的值ConditionValue*/
+  }
+}
+ConditionValue BasicBoolean() :
+{
+  ConditionValue cv = new ConditionValue();
+  ConditionValue cvt = null;
+  Token test = null;
+}
+{
+  (
+    (
+      test = < FEI >
+      (
+        < LRBRACKET > 
+        cvt = tiaojian() 
+        < RRBRACKET >
+      )
+    )
+  |
+    (
+      cvt = tiaojian()
+    )
+  )
+  {
+    if (test == null)
+    {
+      cv.mergeFalse(cvt);
+      cv.mergeTrue(cvt);
+    }
+    else //有 ！ 号，要采用不同的操作merge真假串
+    {
+      cv.FEImerge(cvt);
+    }
+  }
+  {
+    return cv;
+  }
+}
+
+ConditionValue YuBoolean() :
+{
+  ConditionValue cv3 = new ConditionValue(); //CV3代表整个表达式
+  ConditionValue cv2 = null;
+  ConditionValue cv1 = null;
+  Token test = null;
+}
+{
+  cv1 = BasicBoolean()
+  {
+    cv3.mergeFalse(cv1); //cv1的假出口即cv3的假出口
+  }
+  (
+    test = < YU >
+    {
+      cv1.backpatchTrueChain(QTInfo.size + 1); //E&&M 当E为真时，要哦继续计算M的真假，所以E的真出口在M处
+    }
+    cv2 = YuBoolean()
+    {
+      cv3.mergeFalse(cv2);
+    }
+  )?
+  {
+    if (cv2 == null) //如果没有YU
+    {
+      cv3 = cv1; //直接返回CV1即可
+    }
+    else
+    {
+      cv3.mergeTrue(cv2); //cv2的真链merge到cv3中
+    }
+  }
+  {
+    return cv3;
+  }
+}
+
+ConditionValue Boolean() :
+{
+  ConditionValue cv1 = null; //第一个简单布尔表达式
+  ConditionValue cv2 = null; // ||号后面的布尔表达式  
+  ConditionValue cv3 = new ConditionValue(); //整个YuBoolean表达式的condationvalue的值
+  Token test = null;
+}
+{
+  cv1 = YuBoolean()
+  {
+    cv3.mergeTrue(cv1); // E || M, E为真则整个表达式的值为真
+  }
+  (
+    test = < HUO >
+    {
+      cv1.backpatchFalseChain(QTInfo.size + 1);//回填 假 出口
+    }
+    cv2 = Boolean()
+    {
+      cv3.mergeTrue(cv2);
+    }
+  )?
+  {
+    if (test == null)
+    {
+      cv3 = cv1;
+    }
+    else
+    {
+      cv3.mergeFalse(cv2);
+    }
+  }
+  {
+    return cv3;
+  }
+}
+
+
+
+/*
+switch-case
+
+switch(expression)
+{
+  case value1:
+  		XXX;
+  		break;
+  case value2:
+  		XXX;
+  		break;
+  default:
+		XXX;
+}
+
+*/
+
+void SwitchCase() :
+{
+  Token t, t1;
+  String ex = null;
+  int index = 0;
+}
+{
+  t = < SWITCH > 
+  t = "(" 
+  ex = Expression() 
+  t = ")" 
+  t = "{"
+  (
+    t = < CASE > 
+    t1 = < INTEGER_LITERAL > 
+    t = ":"
+    {
+      System.out.println("j==\u56db\u5143\u5f0f\u4ea7\u751f");
+      QTInfo qt1 = new QTInfo("j==", ex, t1.image, QTInfo.size + 3);
+      QTInfo qt2 = new QTInfo("j", "-", "-", "-");
+      shdl.addIndex(QTInfo.size);
+      //此时QTInfo.size是qt2的编号，将qt2的编号放入shdl（SwitchHDL）里面，便于后面回填
+      System.out.println("addIndex\u586b\u4e86" + QTInfo.size);
+      qtlist.addQTInfo(qt1);
+      qtlist.addQTInfo(qt2);
+    }
+    SentenceBlock()
+    {
+      QTInfo qt3 = new QTInfo("j", "-", "-", "-");
+      qtlist.addQTInfo(qt3);
+      shdl.addOutIndex(QTInfo.size);
+    }
+  )*
+  (
+    t = < MINIDEFAULT > 
+    t = ":"
+    {
+      index = QTInfo.size + 1;
+      //记录default执行语句的的开始地方
+    }
+    SentenceBlock()
+    {
+      shdl.SwitchDefaultBackPatch(index, QTInfo.size + 1, qtlist);
+      //扫描完成default之后回填switchcase语句的出口
+      shdl.clean();
+    }
+  )
+  t = "}"
+}
+
+String guanxifu() :
+{
+  Token t = null;
+}
+{
+  (
+    t = "<"
+  | t = ">"
+  | t = "="
+  | t = "<="
+  | t = ">="
+  | t = "=="
+  | t = "!="
+  )
+  {
+    return t.image;
+  }
+}
+
+
+//ConditionValue tiaojian() :
+//{}
+//{
+//  biaodashi() guanxifu() biaodashi()
+//}
+String biaodashi() :
+{
+  String s = null;
+}
+{
+  s = Expression()
+  {
+    return s;
+  }
+}
+
+
+
+String Expression() :
+{
+  String s = null;
+}
+{
+  s = AdditiveExpression()
+  {
+    return s;
+  }
+}
+
+String AdditiveExpression() : //附加表达式
+{
+  String a = null;
+  String b = null;
+  String res = null;
+  Token t = null;
+}
+{
+  a = MultiplicativeExpression() /*加法表达式    a+b+c -- >(+,a,b,T1) (+,T1,c,T2)*/
+  {
+    res = a;
+  }
+  (
+    (
+      t = "+"
+    | t = "-"
+    )
+    b = MultiplicativeExpression()
+    {
+      res = VariableNameGenerator.genVariableName();
+      QTInfo qt = new QTInfo(t.image, a, b, res);
+      qtlist.addQTInfo(qt);
+      a = res;
+    }
+  )*
+  {
+    return res;
+  }
+}
+
+String MultiplicativeExpression() : //乘法表达式 a*b*c-- >(*,a,b,T1)(*,T1,c,T2)
+//QTInfo(String operator, String arg1, String arg2, String result)
+{
+  String a = null;
+  String b = null;
+  String res = null;
+  Token t = null;
+}
+{
+  a = UnaryExpression()
+  {
+    res = a; /*如果只有UnaryExpression()而没有后面的()*,这时候返回的String值是单目运算表达式的返回String*/
+  }
+  (
+    (
+      t = "*"
+    | t = "/"
+    | t = "%"
+    )
+    b = UnaryExpression()
+    {
+      res = VariableNameGenerator.genVariableName();
+      QTInfo qt = new QTInfo(t.image, a, b, res);
+      qtlist.addQTInfo(qt);
+      a = res; /*将res 赋给a,满足a*b*c的情况，返回两个四元式，即让下一次调用时，a=T1*/
+    }
+  )*
+  {
+    return res;
+  }
+}
+
+String UnaryExpression() : //一元表达式
+{
+  String s = null;
+}
+{
+  "(" s = Expression() ")"
+  {
+    return s;
+  }
+| s = Identifier()
+  {
+    if (!(varmap.Variablecontains(s)))
+    {
+      System.out.println("@ERR! The Variable," + s + ", has NOT been defined...");
+    }
+  }
+  {
+    return s;
+  }
+| s = Integer()
+  {
+    return s;
+  }
+| s = Float()
+  {
+    return s;
+  }
+}
+
+String Identifier() :
+{
+  Token t = null;
+}
+{
+  t = < IDENTIFIER >
+  {
+    return t.image;
+  }
+}
+
+String Integer() :
+{
+  Token t = null;
+}
+{
+  t = < INTEGER_LITERAL >
+  {
+    return t.image;
+  }
+}
+
+void Returnstatment() :
+{}
+{
+  < RETURN > biaodashi() ";"
+}
+
+String Float() :
+{
+  Token t = null;
+}
+{
+  t = < FLOAT_LITERAL >
+  {
+    return t.image;
+  }
+}

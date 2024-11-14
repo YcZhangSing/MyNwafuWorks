@@ -1,0 +1,16 @@
+void main()
+{
+	int a,b,c,x,y,m,n;
+	a=1;
+	b=2;
+	c=3;
+	if(a|| m>n || c&& x>y )
+	{
+		a=0;
+	}
+	else
+	{
+		a=2;
+	}
+	return 0;
+}

@@ -1,0 +1,12 @@
+int main()
+{
+	int test;
+	int a[5][5];
+	int b[3];
+	test = a[1][1];
+	a[1][1]=test;
+	
+	test=b[1];
+	b[2]=test;
+
+}

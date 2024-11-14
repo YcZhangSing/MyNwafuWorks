@@ -1,0 +1,1117 @@
+/**
+ * JJTree template file created by SF JavaCC plugin 1.5.17+ wizard for JavaCC 1.5.0+
+ */
+options
+{
+  JDK_VERSION = "1.5";
+  static = true;
+}
+
+PARSER_BEGIN(miniC)
+package myPackage;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.BufferedWriter;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.OutputStreamWriter;
+import java.util.ArrayList;
+import java.io.IOException;
+import util.*;
+import util.TokenTable;
+
+public class miniC
+{
+  public static TokenTable tokenTable = new TokenTable();
+
+  public static VariableNameGenerator variableNameGenerator = new VariableNameGenerator();
+
+  public static QTList qtList = new QTList();
+
+  public static SimpleNode n;
+
+  public static boolean errorflag=false;
+
+  public static VariableTable varTable = new VariableTable();
+
+  public static void begin(File file, int tag) throws FileNotFoundException, ParseException
+  {
+    FileInputStream fstream = new FileInputStream(file);
+    if (tag != 0)
+    {
+      System.out.println(tag);
+      ReInit(fstream);
+    }
+    else
+    {
+      new miniC(fstream);
+    }
+    n = miniC.Start();
+  }
+
+  public static void lexAnaly()
+  {
+    tokenTable.printTokenTable();
+  }
+
+  public static void syncTreePrint() throws IOException
+  {
+    File file = new File("./output/syncTree.txt");
+	BufferedWriter out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file, true)));
+	out.write("");
+	out.flush();
+	out.close();
+    n.dump("");
+  }
+
+  public static void QTListPrint()
+  {
+    qtList.printQTList();
+  }
+
+  public static void main(String args []) throws FileNotFoundException
+  {
+      File file = new File("./Files/accept/func.txt");
+    //    File file = new File("./Files/avaiable/boolean.c");
+    //    
+    //File file = new File("./Files/checkError/reDefine.c");
+//    File file = new File("./Files/checkError/unDefine.c");
+//    File file = new File("./Files/avaiable/test.c");
+    FileInputStream fstream = new FileInputStream(file);
+    new miniC(fstream);
+    try
+    {
+      n = miniC.Start();
+      n.dump("");
+      tokenTable.printTokenTable();
+
+      varTable.printList();
+//      QTList.printQTList();
+
+      System.out.println("Thank you.");
+    }
+    catch (Exception e)
+    {
+      System.out.println("Oops.");
+      System.out.println(e.getMessage());
+    }
+  }
+}
+
+PARSER_END(miniC)
+
+SKIP :
+{
+  " "
+| "\t"
+| "\n"
+| "\r"
+| < "//" (~[ "\n", "\r" ])*
+    (
+      "\n"
+    | "\r"
+    | "\r\n"
+    ) >
+| < "/*" (~[ "*" ])* "*"
+    (
+      ~[ "/" ] (~[ "*" ])* "*"
+    )*
+    "/" >
+}
+
+TOKEN : /* LITERALS */
+{
+  < INTEGER_LITERAL :
+    < DECIMAL_LITERAL > ([ "l", "L" ])?
+  | < HEX_LITERAL > ([ "l", "L" ])?
+  | < OCTAL_LITERAL > ([ "l", "L" ])? 
+  >
+| < FLOAT_LITERAL :
+    [ "1"-"9" ] ([ "0"-"9" ])*
+    (
+      "." ([ "0"-"9" ])*
+    )? >
+| < #DECIMAL_LITERAL : [ "1"-"9" ] ([ "0"-"9" ])* >
+| < #HEX_LITERAL : "0" [ "x", "X" ] ([ "0"-"9", "a"-"f", "A"-"F" ])+ >
+| < #OCTAL_LITERAL : "0" ([ "0"-"7" ])* >
+}
+
+TOKEN :
+{
+  < INT : "int" >
+| < WHILE : "while" >
+| < VOID : "void" >
+| < FLOAT : "float" >
+| < BOOL : "bool" >
+| < DOUBLE : "double" >
+| < FOR : "for" >
+| < IF : "if" >
+| < ELSE : "else" >
+| < RETURN : "return" >
+| < MAIN : "main" >
+| < CHAR : "char" >
+| < TRUE : "true" >
+| < FALSE : "false" >
+| < DO : "do" >
+| < SWITCH :"switch">
+| < CASE:"case">
+| < DEFAULTT : "default" >
+| < BREAK : "break" >
+}
+
+TOKEN : /* IDENTIFIERS */
+{
+  < IDENTIFIER :
+    < LETTER >
+    (
+      < LETTER >
+    | < DIGIT >
+    )* >
+| < #LETTER : [ "_", "a"-"z", "A"-"Z" ] >
+| < #DIGIT : [ "0"-"9" ] >
+}
+
+TOKEN : /*charSet*/
+{
+  < LB : "(" >
+| < RB : ")" >
+| < LS : "{" >
+| < RS : "}" >
+}
+
+TOKEN : /*Operator*/
+{
+  < ADD : "+" >
+| < SUB : "-" >
+| < MULT : "*" >
+| < DIV : "/" >
+| < MOD : "%" >
+}
+
+TOKEN : /*logicOperator*/
+{
+  < AND : "&&" >
+| < OR : "||" >
+| < UN : "!" >
+}
+
+TOKEN : /*RelationChar*/
+{
+  < LESS : "<" >
+| < LESSN : "<=" >
+| < GREAT : ">" >
+| < GREATN : ">=" >
+| < EQU : "==" >
+| < NOTEQU : "!=" >
+}
+
+TOKEN :
+{
+  < COMMA : "," >
+| < SEMIC : ";" >
+| < COLON:":" >
+}
+
+SimpleNode Start() :
+{}
+{
+  Procedure()
+  {
+    return jjtThis;
+  }
+}
+
+void Procedure() : //程序
+{
+  Token t;
+}
+{
+  (
+    function()
+  )*
+  t = StartKey() 
+  t = < MAIN >
+  {
+    tokenTable.addToken(t);
+  }
+  t = < LB >
+  {
+    tokenTable.addToken(t);
+  }
+  (
+    Parameter()
+  )*
+  t = < RB >
+  {
+    tokenTable.addToken(t);
+  }
+  t = < LS >
+  {
+    tokenTable.addToken(t);
+  }
+  (
+    StatementBlocks()
+  )*
+  (< RETURN > Identifier()< SEMIC >)?
+  t = < RS >
+  {
+    tokenTable.addToken(t);
+  }
+}
+
+
+void function(): //函数
+{
+  Token t;
+}
+{
+  t=DeclarKey()
+  DefineId(t)
+  {
+    tokenTable.addToken(t);
+  }
+  t = < LB >
+  {
+    tokenTable.addToken(t);
+  }
+  (
+    Parameter()
+  )*
+  t = < RB >
+  {
+    tokenTable.addToken(t);
+  }
+  t = < LS >
+  {
+    tokenTable.addToken(t);
+  }
+  (
+    StatementBlocks()
+  )*
+  (< RETURN > Identifier()< SEMIC >)?
+  t = < RS >
+  {
+    tokenTable.addToken(t);
+  }
+}
+
+
+void Parameter() : //函数参数
+{
+  Token t;
+  Token dt;
+  boolean tag;
+}
+{
+  dt = DeclarKey() 
+  tag = DefineId(dt)
+  {
+    if (tag == false)
+    {
+    //      System.out.println(dt.beginLine + " " + dt.beginColumn + "  error Declar: " + dt.image);
+    }
+  }
+  (
+    t = < COMMA >
+    {
+      tokenTable.addToken(t);
+    }
+    dt = DeclarKey() 
+    tag = DefineId(dt)
+    {
+      if (tag == false)
+      {
+      //        System.out.println(dt.beginLine + " " + dt.beginColumn + "  error Declar: " + dt.image);
+      }
+    }
+  )*
+}
+
+void StatementBlocks() : //语句块
+{
+  Token t;
+}
+{
+ Statement()
+|
+  (
+    t = < LS >
+    {	
+      tokenTable.addToken(t);
+    }
+    (
+      StatementBlocks()
+    )*
+    t = < RS >
+    {	
+      tokenTable.addToken(t);
+    }
+  )
+}
+
+void Statement() :
+{}
+{
+  SeqStatement()
+| CondStatement()
+| LoopStatement()
+}
+
+void callfun() :
+{
+  Token t;
+}
+{
+  (
+  < IDENTIFIER >
+  < LB >
+  < IDENTIFIER >(< COMMA >< IDENTIFIER >)*
+  < RB >
+  t = < SEMIC >
+  )
+  {	
+    tokenTable.addToken(t);
+  }
+}
+
+void SeqStatement() : //顺序语句
+{
+  Token t;
+}
+{
+  (
+    
+  (
+    DeclarStatement()
+  | AssignStatement()
+  )
+  t = < SEMIC >
+  {	
+    tokenTable.addToken(t);
+  }
+)
+| SwitchCase()
+}
+
+/*
+switch-case
+
+switch(expression)
+{
+  case value1:
+  		XXX;
+  		break;
+  case value2:
+  		XXX;
+  		break;
+  default:
+		XXX;
+}
+
+*/
+
+void SwitchCase():
+{ Token t;}
+{
+  t = < SWITCH >
+  {tokenTable.addToken(t); }
+  t = "("
+  {tokenTable.addToken(t); }
+  Identifier()
+  t = ")"
+  {tokenTable.addToken(t); }
+  t = "{"
+  {tokenTable.addToken(t); }
+  CaseState()
+  t = "}"
+  {tokenTable.addToken(t); }
+}
+
+void CaseState() :
+{
+  Token t, t1;
+}
+{
+  (
+    t = < CASE >
+    {
+      tokenTable.addToken(t);
+    }
+    t1 = < INTEGER_LITERAL >
+    {
+      tokenTable.addToken(t1);
+    }
+    t = ":"
+    {
+      tokenTable.addToken(t);
+    }
+    StatementBlocks()
+  )*
+  (
+    t = < DEFAULTT > 
+    t = ":" 
+    StatementBlocks() 
+  )
+}
+
+void DeclarStatement() : //声明语句
+{
+  Token t, t2;
+  boolean tag = true;
+}
+{
+  t = DeclarKey() 
+  tag = DefineId(t)
+  {
+    if (tag == false)
+    {
+    //      System.out.println(t.beginLine + " " + t.beginColumn + "  error Declar: " + t.image);
+    }
+  }
+  (
+    t2 = < COMMA >
+    {	
+      tokenTable.addToken(t2);
+    }
+    tag = DefineId(t)
+    {
+      //      varTable.printList();
+      if (tag == false)
+      {
+      //        System.out.println(t.beginLine + " " + t.beginColumn + "  error Declar: " + t.image);
+      }
+    }
+  )*
+}
+
+void AssignStatement() : //赋值语句
+{
+  Token op;
+  Token first;
+  String exp;
+}
+{
+  
+    first = Identifier()
+    (
+    op = "="
+    {
+      tokenTable.addToken(op);
+    }
+    exp = Expression()
+    {
+      QTInfo qt = new QTInfo(op.image, exp, "_", first.image);
+      qtList.addQTInfo(qt);
+    }
+  )?
+  (
+  < LB >
+  < IDENTIFIER >(< COMMA >< IDENTIFIER >)*
+  < RB >
+  )?
+}
+
+void CondStatement() : //条件语句
+{
+  ConditionValue chain = new ConditionValue();
+  ConditionValue temp = new ConditionValue();
+  int i;
+  Token t;
+}
+{
+  t = < IF >
+  {
+    tokenTable.addToken(t);
+  }
+  t = < LB >
+  {
+    tokenTable.addToken(t);
+    chain = Logic();
+  }
+  t = < RB >
+  {	
+    tokenTable.addToken(t);
+    i = QTInfo.size + 1;
+    chain.backpatchTrueChain(i);
+  }
+  (
+    StatementBlocks()
+  )
+  {
+    QTInfo qt = new QTInfo("J", "_", "_", "N");
+    temp.mergeTrue(qt);
+    qtList.addQTInfo(qt);
+    i = QTInfo.size + 1;
+    chain.backpatchFalseChain(i);
+  }
+  (
+    t = < ELSE >
+    {	
+      tokenTable.addToken(t);
+    }
+    StatementBlocks()
+    {
+      i = QTInfo.size + 1;
+      temp.backpatchTrueChain(i);
+    }
+  )?
+}
+
+ConditionValue Logic() : //逻辑或
+{
+  int seq = 0;
+  int tag = 0;
+  Token t;
+  ConditionValue chain = new ConditionValue();
+  ConditionValue resChain = new ConditionValue();
+  ConditionValue chain2 = new ConditionValue();
+}
+{
+  chain = LogicAnd()
+  (
+    t = < OR >
+    {
+      tokenTable.addToken(t);
+      tag = 1;
+      seq = QTInfo.size + 1;
+      chain.backpatchFalseChain(seq);
+    }
+    chain2 = LogicAnd()
+    {
+      resChain = new ConditionValue();
+      ExpressionType.merge(resChain.getFalseChain(), chain2.getFalseChain());
+      ExpressionType.merge(chain2.getTrueChain(), chain.getTrueChain());
+      ExpressionType.merge(resChain.getTrueChain(), chain2.getTrueChain());
+      chain = resChain;
+    }
+  )*
+  {
+    if (tag == 0) 
+    return chain;
+    else 
+    return resChain;
+  }
+}
+
+ConditionValue LogicAnd() : //逻辑与
+{
+  int seq = 0;
+  int tag = 0;
+  Token t;
+  ConditionValue chain = new ConditionValue();
+  ConditionValue resChain = new ConditionValue();
+  ConditionValue chain2 = new ConditionValue();
+}
+{
+  chain = LogicNot()
+  (
+    t = < AND >
+    {
+      tokenTable.addToken(t);
+      tag = 1;
+      seq = QTInfo.size + 1;
+      chain.backpatchTrueChain(seq);
+    }
+    chain2 = LogicNot()
+    {
+      resChain = new ConditionValue();
+      ExpressionType.merge(resChain.getTrueChain(), chain2.getTrueChain());
+      ExpressionType.merge(chain2.getFalseChain(), chain.getFalseChain());
+      ExpressionType.merge(resChain.getFalseChain(), chain2.getFalseChain());
+      chain = resChain;
+    }
+  )*
+  {
+    if (tag == 0) 
+    return chain;
+    else 
+    return resChain;
+  }
+}
+
+ConditionValue LogicNot() : //逻辑非
+{
+  ConditionValue chain = new ConditionValue();
+  ConditionValue chain1 = new ConditionValue();
+  Token t;
+}
+{
+  (
+    chain = Condition()
+  |
+    (
+      t = < UN >
+      {
+        tokenTable.addToken(t);
+      }
+      chain1 = Condition()
+      {
+        chain.setTrueChain(chain1.getFalseChain());
+        chain.setFalseChain(chain1.getTrueChain());
+      }
+    )
+  )*
+  {
+    return chain;
+  }
+}
+
+ConditionValue Condition() : //条件
+{
+  int tag = 0;
+  String first;
+  String middle;
+  String rop;
+  ConditionValue chain = new ConditionValue();
+}
+{
+  first = Expression()
+  (
+    rop = RelationChar() 
+    middle = Expression()
+    {
+      QTInfo qt1 = new QTInfo("J" + rop, first, middle, "N");
+      QTInfo qt2 = new QTInfo("J", "_", "_", "N");
+      chain.mergeTrue(qt1);
+      chain.mergeFalse(qt2);
+      qtList.addQTInfo(qt1);
+      qtList.addQTInfo(qt2);
+      tag = 1;
+    }
+  )?
+  {
+    if (tag == 0)
+    {
+      QTInfo qt1 = new QTInfo("JNZ", first, "_", "N");
+      QTInfo qt2 = new QTInfo("J", "_", "_", "N");
+      chain.mergeTrue(qt1);
+      chain.mergeFalse(qt2);
+      qtList.addQTInfo(qt1);
+      qtList.addQTInfo(qt2);
+    }
+  }
+  {
+    return chain;
+  }
+}
+
+void LoopStatement() : //循环语句
+{}
+{
+  (
+    While()
+  | Do_While()
+  | For_Loop()
+  )
+}
+
+void While() : //循环语句
+{
+  Token t;
+  int seq = 0, tag;
+  ConditionValue chain;
+  ConditionValue temp = new ConditionValue();
+}
+{
+  t = < WHILE >
+  {
+    tokenTable.addToken(t);
+  }
+  t = < LB >
+  {
+    tokenTable.addToken(t);
+    tag = qtList.QTList.size() + 1;
+  }
+  chain = Logic() 
+  t = < RB >
+  {
+    tokenTable.addToken(t);
+  }
+  t = < LS >
+  {
+    //    System.out.println(Integer.toString(tag));
+    tokenTable.addToken(t);
+    seq = QTInfo.size + 1;
+    chain.backpatchTrueChain(seq);
+  }
+  (
+    StatementBlocks()
+  )*
+  t = < RS >
+  {
+    tokenTable.addToken(t);
+    QTInfo qt = new QTInfo("J", "_", "_", Integer.toString(tag));
+    qtList.addQTInfo(qt);
+    seq = QTInfo.size + 1;
+    chain.backpatchFalseChain(seq);
+  }
+}
+
+void Do_While() :
+{
+  Token t;
+  int seq, tag;
+  ConditionValue chain;
+	
+}
+{
+  t = < DO >
+  {
+    tokenTable.addToken(t);
+  }
+  t = < LS >
+  {
+    tokenTable.addToken(t);
+    tag = qtList.QTList.size() + 1;
+  }
+  (
+    StatementBlocks()
+  )*
+  t = < RS >
+  {
+    tokenTable.addToken(t); 
+  }
+  t = < WHILE >
+  {
+    tokenTable.addToken(t);
+  }
+  t = < LB >
+  {
+    tokenTable.addToken(t);
+  }
+  chain = Logic() 
+  {
+//    QTInfo qt = new QTInfo("J", "_", "_", Integer.toString(tag));
+//    QTList.addQTInfo(qt);
+    seq = QTInfo.size + 1;
+    chain.backpatchFalseChain(seq);
+    chain.backpatchTrueChain(tag);
+  }
+  t = < RB >
+  {
+    tokenTable.addToken(t);
+  }
+  t = < SEMIC >
+  {
+    tokenTable.addToken(t);
+  }
+}
+
+void For_Loop() :
+{
+  Token t;
+  int seq, tag;
+  ConditionValue chain;
+}
+{
+  t = < FOR >
+  {
+    tokenTable.addToken(t);
+  }
+  t = < LB >
+  {
+    tokenTable.addToken(t);
+  }
+  AssignStatement() 
+  t = < SEMIC >
+  {
+    tokenTable.addToken(t);
+  }
+  chain = Logic() 
+  < SEMIC >
+  {
+    tokenTable.addToken(t);
+  }
+  AssignStatement() 
+  < RB >
+  {
+    tokenTable.addToken(t);
+    seq = QTInfo.size + 1;
+    chain.backpatchTrueChain(seq);
+    tag = qtList.QTList.size() + 1;
+  }
+  //    (
+  StatementBlocks()
+  //  )*
+  {
+    
+    QTInfo qt = new QTInfo("J", "_", "_", Integer.toString(tag));
+    qtList.addQTInfo(qt);
+    seq = QTInfo.size + 1;
+    chain.backpatchFalseChain(seq);
+  }
+}
+
+String Expression() :
+{
+  String exp;
+}
+{
+  exp = AdditiveExpression()
+  {
+    return exp;
+  }
+}
+
+String AdditiveExpression() :
+{
+  String first;
+  String middle;
+  String newTemp;
+  Token op;
+}
+{
+  first = MultiplicativeExpression()
+  {
+    newTemp = first;
+  }
+  (
+    (
+      op = < ADD >
+    | op = < SUB >
+    )
+    {
+      tokenTable.addToken(op);
+    }
+    middle = MultiplicativeExpression()
+    {
+      newTemp = variableNameGenerator.genVariableName();
+      QTInfo qt = new QTInfo(op.image, first, middle, newTemp);
+      qtList.addQTInfo(qt);
+      first = newTemp;
+    }
+  )*
+  {
+    return newTemp;
+  }
+}
+
+String MultiplicativeExpression() :
+{
+  String first;
+  String middle;
+  String newTemp;
+  Token op;
+}
+{
+  first = UnaryExpression()
+  {
+    newTemp = first;
+  }
+  (
+    (
+      op = < MULT >
+    | op = < DIV >
+    | op = < MOD >
+    )
+    {
+      tokenTable.addToken(op);
+    }
+    middle = UnaryExpression()
+    {
+      newTemp = variableNameGenerator.genVariableName();
+      QTInfo qt = new QTInfo(op.image, first, middle, newTemp);
+      qtList.addQTInfo(qt);
+      first = newTemp;
+    }
+  )*
+  {
+    return newTemp;
+  }
+}
+
+String UnaryExpression() :
+{
+  String exp;
+  Token t;
+}
+{
+  (
+    (
+      t = < LB >
+      {
+        tokenTable.addToken(t);
+      }
+      exp = Expression() 
+      t = < RB >
+      {
+        tokenTable.addToken(t);
+      }
+    )
+  | t = Identifier()
+    {
+      exp = t.image;
+    }
+  | t = Integer()
+    {
+      exp = t.image;
+    }
+    //  | t = Logic()
+  | t = < TRUE >
+    {
+      tokenTable.addToken(t);
+      exp = t.image;
+    }
+  | t = < FALSE >
+    {
+      tokenTable.addToken(t);
+      exp = t.image;
+    }
+  | t = Float()
+    {
+      exp = t.image;
+    }
+  )
+  {
+    return exp;
+  }
+}
+
+Token Identifier() : //用于检查重复声明的标识符
+{
+  Token t;
+}
+{
+  t = < IDENTIFIER >
+  {
+    if (varTable.canInsert(t.image) == false) //表示该标识符已经声明
+    {
+      tokenTable.addToken(t);
+      return t;
+    }
+    else
+    {
+      String temp="Line: " + t.beginLine + " Column:" + t.beginColumn + " 未定义变量: " + t.image;
+	File error = new File("./output/error.txt");
+	FileWriter fileWriter = null;
+		try {
+			fileWriter = new FileWriter(error);
+		} catch (IOException e) {
+			// TODO 自动生成的 catch 块
+			e.printStackTrace();
+		}
+        try {
+			fileWriter.write(temp);
+		} catch (IOException e) {
+			// TODO 自动生成的 catch 块
+			e.printStackTrace();
+		}
+        try {
+			fileWriter.flush();
+		} catch (IOException e) {
+			// TODO 自动生成的 catch 块
+			e.printStackTrace();
+		}
+        try {
+			fileWriter.close();
+		} catch (IOException e) {
+			// TODO 自动生成的 catch 块
+			e.printStackTrace();
+		}
+	errorflag=true;
+      return t;
+    }
+  }
+}
+
+boolean DefineId(Token t) : //用于定义标识符
+{
+  Token id;
+}
+{
+  id = < IDENTIFIER >
+  {
+    //    varTable.printList();
+    if (varTable.canInsert(id.image))
+    {
+      varTable.insertVar(id.image, t.image);
+      tokenTable.addToken(id);
+      return true;
+    }
+    String temp="Line: " + id.beginLine + " Column: " + id.beginColumn + " 重复定义变量: " + id.image;
+	File error = new File("./output/error.txt");
+	FileWriter fileWriter = new FileWriter(error);
+	fileWriter.write(temp);
+	fileWriter.flush();
+	fileWriter.close();
+	errorflag=true;
+    return false;
+  }
+}
+
+Token Integer() :
+{
+  Token t;
+}
+{
+  t = < INTEGER_LITERAL >
+  {
+    tokenTable.addToken(t);
+    return t;
+  }
+}
+
+Token Float() :
+{
+  Token t;
+}
+{
+  t = < FLOAT_LITERAL >
+  {
+    tokenTable.addToken(t);
+    return t;
+  }
+}
+
+Token StartKey() :
+{
+  Token t;
+}
+{
+  (
+    t = < VOID >
+  | t = < INT >
+  )
+  {
+    tokenTable.addToken(t);
+    return t;
+  }
+}
+
+Token DeclarKey() :
+{
+  Token t;
+}
+{
+  (
+    t = < INT >
+  | t = < FLOAT >
+  | t = < CHAR >
+  | t = < DOUBLE >
+  | t = < BOOL >
+  )
+  {
+    tokenTable.addToken(t);
+    return t;
+  }
+}
+
+String RelationChar() : //关系符
+{
+  Token rop;
+}
+{
+  (
+    rop = < LESS >
+  | rop = < LESSN >
+  | rop = < GREAT >
+  | rop = < GREATN >
+  | rop = < EQU >
+  | rop = < NOTEQU >
+  )
+  {
+    tokenTable.addToken(rop);
+    return rop.image;
+  }
+}

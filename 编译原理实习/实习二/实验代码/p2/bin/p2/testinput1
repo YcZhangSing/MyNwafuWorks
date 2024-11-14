@@ -1,0 +1,9 @@
+void main()
+{
+	while(a>45)
+	{
+		int x1,x
+		x= x1+1;
+	}
+
+}

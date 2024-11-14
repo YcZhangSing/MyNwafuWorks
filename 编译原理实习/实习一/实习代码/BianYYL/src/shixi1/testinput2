@@ -1,0 +1,13 @@
+int main()
+{
+	int a=1,b=2;
+	if(a+b>3)
+	{
+		a=0;
+	}
+	else
+	{
+	a=2;
+	}
+	return 0;
+}

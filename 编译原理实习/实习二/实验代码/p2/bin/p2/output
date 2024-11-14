@@ -1,0 +1,40 @@
+src/p2/testinput1的语法分析结果：
+Start
+ SentenceBlock
+  Sentence
+   xunhuan
+    tiaojian
+     biaodashi
+      Expression
+       AdditiveExpression
+        MultiplicativeExpression
+         UnaryExpression
+          Identifier
+     guanxifu
+     biaodashi
+      Expression
+       AdditiveExpression
+        MultiplicativeExpression
+         UnaryExpression
+          Integer
+    SentenceBlock
+     SentenceBlock
+      Sentence
+       shunxu
+        shengming
+         Identifier
+         Identifier
+     SentenceBlock
+      Sentence
+       shunxu
+        fuzhi
+         biaodashi
+          Expression
+           AdditiveExpression
+            MultiplicativeExpression
+             UnaryExpression
+              Identifier
+            MultiplicativeExpression
+             UnaryExpression
+              Integer
+src/p2/testinput1的语法分析结果：
