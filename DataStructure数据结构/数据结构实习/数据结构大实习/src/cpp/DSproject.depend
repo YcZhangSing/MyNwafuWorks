@@ -1,0 +1,59 @@
+# depslib dependency file v1.0
+1658475962 source:c:\users\华为\desktop\dsproject\main.cpp
+	"main.h"
+
+1657701376 c:\users\华为\desktop\dsproject\g24.h
+	<string>
+	<math.h>
+	<cstring>
+	<fstream>
+	<iostream>
+
+1657704155 source:c:\users\华为\desktop\dsproject\search.cpp
+	"search.h"
+
+1657704553 c:\users\华为\desktop\dsproject\main.h
+	<string>
+	<math.h>
+	<cstring>
+	<fstream>
+	<iostream>
+	"mystack.h"
+
+1657701699 source:c:\users\华为\desktop\dsproject\mystack.cpp
+	"mystack.h"
+
+1657765088 c:\users\华为\desktop\dsproject\mystack.h
+	<iostream>
+	<assert.h>
+
+1657703285 source:c:\users\华为\desktop\dsproject\infixtopostfix.cpp
+	"InfixToPostfix.h"
+
+1657697934 c:\users\华为\desktop\dsproject\infixtopostfix.h
+	<iostream>
+	<string>
+	"mystack.h"
+
+1657704553 source:c:\users\华为\desktop\dsproject\calpostfix.cpp
+	"calpostfix.h"
+
+1657704553 c:\users\华为\desktop\dsproject\calpostfix.h
+	<stdio.h>
+	<stdlib.h>
+	<string>
+	"mystack.h"
+
+1657704123 source:c:\users\华为\desktop\dsproject\yanzheng.cpp
+	"yanzheng.h"
+
+1657701659 c:\users\华为\desktop\dsproject\yanzheng.h
+	"calpostfix.h"
+	"InfixToPostfix.h"
+	<stdio.h>
+	<string>
+
+1657701682 c:\users\华为\desktop\dsproject\search.h
+	"G24.h"
+	"yanzheng.h"
+

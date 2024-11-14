@@ -1,0 +1,88 @@
+#include<bits/stdc++.h>
+using namespace std;
+int  pre[10000];
+int  in[5000];
+struct node
+{
+    int data;
+    struct node* lc;
+    struct node* rc;
+    
+};
+struct node* creat(int ,int ,int ,int );
+void pvisit(struct node*);
+void fvisit(struct node*);
+int main()
+{
+    int m;
+    cin>>m;
+    for(int i=0;i<m;++i)
+    {
+        cin>>pre[i];
+    }
+     for(int i=0;i<m;++i)
+    {
+        cin>>in[i];
+    }
+    struct node*p=NULL;
+    p=creat(0,m-1,0,m-1);
+    fvisit(p);
+    cout<<endl;
+    pvisit(p);
+    return 0;
+}
+struct node* creat(int ll ,int lr ,int rl ,int rr )
+{
+    struct node* p = new struct node();
+    int pos;
+    p->data=pre[ll];
+    p->lc=NULL;
+    p->rc=NULL;
+    for(int i=rl;i<=rr;i++)
+    {
+        if(pre[ll]==in[i])
+        {
+            pos=i;
+            break;
+        }
+    }
+    if(pos!=rl)
+    {
+        p->lc = creat(ll+1,ll+pos-rl,rl,pos-1);
+    }
+    if(pos!=rr)
+    {
+        p->rc=creat(ll+pos-rl+1,lr,pos+1,rr);
+    }
+    return p;
+}
+void pvisit(struct node* p)
+{
+    if(p!=NULL)
+    {
+        pvisit(p->lc);
+        pvisit(p->rc);
+        cout<<p->data<<" ";
+    }
+}
+void fvisit(struct node* p)
+{
+    queue<struct node*> q;
+    if(p!=NULL)
+    {
+        q.push(p);
+    }
+    while(q.empty()==false)
+    {
+        cout<<q.front()->data<<" ";
+        if(q.front()->lc!=NULL)
+        {
+            q.push(q.front()->lc);
+        }
+         if(q.front()->rc!=NULL)
+        {
+            q.push(q.front()->rc);
+        }
+        q.pop();
+    }
+}

@@ -1,0 +1,130 @@
+#include<bits/stdc++.h>
+using namespace std;
+class Node
+{
+    public:
+    char data='\0';
+    string code="";
+    int time=0;
+    double weight=0.0;
+    Node* lc=NULL;
+    Node* rc=NULL;
+    Node* dad=NULL;
+    friend class hfTree;
+};
+struct commax
+{
+    bool operator()(Node* a,Node* b)
+    {
+        return a->weight > b->weight;
+    }
+};
+struct commin
+{
+    bool operator()(Node* a,Node* b)
+    {
+        return a->weight < b->weight;
+    }
+};
+priority_queue<Node*,vector<Node*>,commax> minhp;//最大算法构建小根堆
+priority_queue<Node*,vector<Node*>,commin> maxhp;//最小算法构建大根堆
+class hfTree
+{
+  public:
+    Node* root=NULL;
+    int kinds=0;
+    void creatW(int num)
+    {
+        int i;
+        int sum=0;
+        int chararry[26]={0};
+        char input;
+        for(i=0;i<num;++i)
+        {
+            cin>>input;
+            chararry[input-'A']++;
+        }
+        for(i=0;i<26;++i)
+        {
+            if(chararry[i]!=0)
+            {
+                Node* newnode = new Node();
+                newnode->data='A'+i;
+                newnode->weight=(double)chararry[i]/num;
+                newnode->time=chararry[i];
+                minhp.push(newnode);
+                maxhp.push(newnode);
+                sum++;
+            }
+        }
+        kinds=sum;
+    }
+    void merge(Node * first,Node * second)
+    {
+        Node* cur=new Node();
+        cur->lc=first;
+        cur->rc=second;
+        cur->weight=first->weight+second->weight;
+        first->dad=cur;
+        second->dad=cur;
+        
+        minhp.push(cur);
+    }
+    void creatT()
+    {
+        int i=0;
+        for(i=0;i<kinds-1;++i)
+        {
+            Node* first = minhp.top();
+            minhp.pop();
+            Node* second = minhp.top();
+            minhp.pop();
+            merge(first, second);
+        }
+        root = minhp.top();
+     
+    }
+    void trav(Node * p)
+    {
+        if(p!=root)
+        {
+            Node* father = p->dad;
+            if(p==father->lc) maxhp.top()->code+="0";
+            if(p==father->rc) maxhp.top()->code+="1";
+            trav(father);
+        }
+        else{
+            return;
+        }
+    }
+    void rever( string s)
+    {
+        int i= s.length()-1;
+        for(;i>=0;--i)
+        {
+            cout<<s[i];
+        }
+    }
+    void creatC()
+    {
+        while(!maxhp.empty())
+        {
+            Node* cur = maxhp.top();
+            trav(cur);
+            cout<<maxhp.top()->data<<" "<<maxhp.top()->time<<" ";
+            rever(maxhp.top()->code);
+            cout<<endl;
+            maxhp.pop();
+        }
+    }
+};
+int main()
+{
+    hfTree hft;
+    int num;
+    cin>>num;
+    hft.creatW(num);
+    hft.creatT();
+    hft.creatC();
+    return 0;
+}

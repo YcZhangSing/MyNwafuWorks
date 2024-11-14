@@ -1,0 +1,80 @@
+#include<bits/stdc++.h>
+using namespace std;
+int pic[1000][1000];
+int v[1000];
+int m=0;
+bool bo[1000];
+void cacul()
+{
+    for(int i=0;i<m;++i)
+    {
+        v[i]=0;
+    }
+    int i=0,j=0;
+    for(i=0;i<m;++i)
+    {
+        for(j=0;j<m;++j)
+        {
+            v[i]+=pic[j][i];
+        }
+    }
+}
+bool J()
+{
+    cacul();
+    int p=0;
+    int i=0;
+    for(;i<m;++i)
+    {
+        if(v[i]==0 && bo[i]==true)
+        {
+            p++;
+            bo[i]=false;
+            for(int j=0;j<m;++j)
+            {
+                pic[i][j]=0;
+            }
+            cacul();
+            i=0;
+        }
+    }
+     if(p==0)
+        {
+            return true;
+        }
+    int sum=0;
+    cacul();
+    for(int i=0;i<m;++i)
+    {
+        sum+=v[i];
+    }
+    if(sum==0)
+    {
+        return false;
+    }
+    else
+    {
+        return true;
+    }
+   
+}
+int main()
+{
+    cin>>m;
+    memset(bo, true, (m+1)*sizeof(bool));
+    for(int i=0;i<m;++i)
+    {
+        for(int j=0;j<m;++j)
+        {
+            cin>>pic[i][j];
+        }
+    }
+    if(J())
+    {
+        cout<<"YES";
+    }
+    else{
+        cout<<"NO";
+    }
+
+}

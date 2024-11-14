@@ -1,0 +1,11 @@
+# depslib dependency file v1.0
+1634493814 source:c:\users\华为\desktop\ds2.1\main.cpp
+	<iostream>
+	<string.h>
+	<algorithm>
+
+1634494770 source:c:\users\华为\desktop\ds2.1\ds2.1.cpp
+	<iostream>
+	<string.h>
+	<algorithm>
+

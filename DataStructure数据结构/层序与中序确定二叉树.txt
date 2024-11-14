@@ -1,0 +1,93 @@
+#include<bits/stdc++.h>
+using namespace std;
+int f[10000];
+int in[10000];
+int m;
+struct node
+{
+    int data;
+    struct node* lc=NULL;
+    struct node* rc=NULL;
+};
+struct node * creat(int fs,int fn,int is,int ie)
+{
+    struct node* p= new struct node();
+    if(fs>fn)
+    {
+        return NULL;
+    }
+    if(is>ie)
+    {
+        return NULL;
+    }
+    int j;
+    bool flag = false;
+    for(int i=fs;i<=fn;i++)
+    {
+        for(j=is;j<=ie;++j)
+        {
+             if(f[i]==in[j])
+             {
+                 flag=true;
+                 break;
+             }
+        }
+       if(flag)
+       {
+           break;
+       }
+    }
+   if(flag){
+                 p->data=in[j];
+                 p->lc=creat(fs+1,fn,is,j-1);
+                 p->rc=creat(fs+1,fn,j+1,ie);
+   }
+   
+    return p;
+}
+void prvisit(struct node * p)
+{
+    cout<<p->data<<" ";
+    if(p->lc!=NULL)
+    {
+        prvisit(p->lc);
+    }
+    if(p->rc!=NULL)
+    {
+        prvisit(p->rc);
+    }
+    
+}
+void povisit(struct node *p)
+{
+   
+    if(p->lc!=NULL)
+    {
+         povisit(p->lc);
+    }
+   if(p->rc!=NULL)
+   {
+       povisit(p->rc);
+   }
+    
+    cout<<p->data<<" ";
+}
+
+int main()
+{
+    cin>>m;
+    for(int i=0;i<m;++i)
+    {
+        cin>>f[i];
+    }
+    for(int i=0;i<m;++i)
+    {
+        cin>>in[i];
+    }
+    struct node* Tree = creat(0,m-1,0,m-1);
+    prvisit(Tree);
+    cout<<endl;
+    povisit(Tree);
+    
+    return 0;
+}

@@ -1,0 +1,76 @@
+#include <iostream>
+#include<stdio.h>
+#include<cstring>
+using namespace std;
+const int MAX=1000;
+int dirx[4]= {1,0,-1,0};
+int diry[4]= {0,-1,0,1};
+int maze[MAX][MAX];
+int J[MAX][MAX];
+int top,w,h;
+struct point
+{
+    int x;
+    int y;
+} s[MAX*16];
+void DFS()
+{
+
+    while(1)
+    {
+        bool flag =false;
+        for(int i=0; i<4; i++)
+        {
+            int nx=s[top].x+dirx[i];
+            int ny=s[top].y+diry[i];
+            if(nx<0||nx>=h||ny<0||ny>=w) continue;
+            if(maze[nx][ny]==4)
+            {
+                for(int j=0; j<=top; ++j)
+                {
+                    printf("%d %d",s[j].y,s[j].x);
+                    printf("\n");
+                }
+                printf("%d %d",ny,nx);
+                printf("\n");
+                return ;
+            }
+            if(maze[nx][ny]==0 && J[nx][ny]==0)
+            {
+                top++;
+                flag = true;
+                J[nx][ny]=1;
+                s[top].x=nx;
+                s[top].y=ny;
+                break;
+            }
+        }
+        if(!flag)
+            top--;
+    }
+}
+int main()
+{
+    int x1,y1;
+    scanf("%d%d",&w,&h);
+    for(int i=0; i<h; i++)
+    {  
+        for(int j=0; j<w; j++)
+        {
+            scanf("%d",&maze[i][j]);
+            if(maze[i][j]==3)
+            {
+                x1=i;
+                y1=j;
+            }
+        }
+    }
+    top=0;
+    s[top].x=x1;
+    s[top].y=y1;
+    int size=sizeof(J);
+    memset(J,0,size);
+    DFS();
+
+    return 0;
+}

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="DSproject" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug">
+				<Option output="bin/Debug/DSproject" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Debug/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-g" />
+				</Compiler>
+			</Target>
+			<Target title="Release">
+				<Option output="bin/Release/DSproject" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Release/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O2" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+			<Add option="-fexceptions" />
+		</Compiler>
+		<Unit filename="InfixToPostfix.cpp">
+			<Option target="Debug" />
+		</Unit>
+		<Unit filename="InfixToPostfix.h">
+			<Option target="Debug" />
+		</Unit>
+		<Unit filename="calpostfix.cpp">
+			<Option target="Debug" />
+		</Unit>
+		<Unit filename="calpostfix.h">
+			<Option target="Debug" />
+		</Unit>
+		<Unit filename="main.cpp" />
+		<Unit filename="main.h">
+			<Option target="Debug" />
+		</Unit>
+		<Unit filename="mystack.cpp">
+			<Option target="Debug" />
+		</Unit>
+		<Unit filename="mystack.h">
+			<Option target="Debug" />
+		</Unit>
+		<Unit filename="search.cpp">
+			<Option target="Debug" />
+		</Unit>
+		<Unit filename="search.h">
+			<Option target="Debug" />
+		</Unit>
+		<Unit filename="testinput.txt">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="yanzheng.cpp">
+			<Option target="Debug" />
+		</Unit>
+		<Unit filename="yanzheng.h">
+			<Option target="Debug" />
+		</Unit>
+		<Extensions>
+			<lib_finder disable_auto="1" />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>
