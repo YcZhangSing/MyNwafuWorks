@@ -1,0 +1,17 @@
+bin
+obj
+/*
+
+!/.gitignore
+!/.USAGE
+!/.HELP
+!/.VERSION
+!/INSTALL
+!/LICENSE
+!/Makefile
+!/README
+!/example
+!/include
+!/lib
+!/src
+!/test

@@ -1,0 +1,96 @@
+package ss;
+
+import java.util.Scanner;
+
+public class q5 {
+	public static int n;
+	public static int[] x;
+	public static int[] bestx; 
+	public static int[] w;
+	public static int c1;
+	public static int c2;
+	public static int cw;
+	public static int bestw;
+	public static int r; 
+	
+static void backtrack(int i) {
+		
+		if (i > n) {
+			if (cw > bestw) {
+				for (int j = 1; j <= n; j++) {
+					bestx[j] = x[j];
+					bestw = cw;
+				}
+			}
+			return;
+		}
+		r -= w[i];
+
+		if (cw + w[i] <= c1) {
+			x[i] = 1;
+			cw += w[i];
+			backtrack(i + 1);
+			cw -= w[i];
+		}
+		if (cw+r>bestw) {
+			x[i] = 0;
+			backtrack(i + 1);
+		}
+		r += w[i];
+}
+
+static void print() {
+		int m1 = 0;
+	    int m2 = 0;
+		System.out.println("装船情况：");
+		for (int i = 1; i <= n; i++) {
+			if (bestx[i] == 0) {
+				m2 += w[i];
+				System.out.print("重量为"+w[i]+"的货物"+"---第2艘\t");
+				
+			}
+			else {
+				m1 += w[i];
+				System.out.print("重量为"+w[i]+"的货物"+"---第1艘\t");
+				
+			}
+		}
+		
+		System.out.println("\n"+"第1艘船总装载重量："+m1);
+		System.out.println("\n"+"第2艘船总装载重量："+m2);
+	}
+	 
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		 Scanner scan= new Scanner(System.in);
+		 System.out.println("请输入这一批集装箱的个数");
+		 n=scan.nextInt();
+		 x=new int[n+1];
+		 bestx = new int[n+1];
+		 w=new int[n+1];
+		 w[0]=0;
+		 r=0;
+		 System.out.println("请输入这一批集装箱的重量");
+		 for(int i=1;i<=n;++i)
+		 {
+			 w[i]=scan.nextInt();
+		 }
+		 System.out.println("请依次输入货船1、2的载货量");
+		 c1=scan.nextInt();
+		 c2=scan.nextInt();
+		 for(int i=0;i<=n;++i)
+		 {
+			 x[i]=0;
+			 r+=w[i];
+		 }
+		 if(r>c1+c2)
+		 {
+			 System.out.println("抱歉！货物总重大于货船排水量，无法解决此问题...");
+		 }
+		 else {
+			backtrack(0);
+			print();
+		 }
+	}
+
+}

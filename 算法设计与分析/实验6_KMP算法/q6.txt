@@ -1,0 +1,77 @@
+package ss;
+
+import java.util.Scanner;
+
+public class q6 {
+
+    private static int[] next(String sub) 
+    //生成匹配表
+    {
+        int[] n = new int[sub.length()];
+        int x = 0;
+        for (int i = 1; i < sub.length(); i++) 
+        {
+            while (x > 0 && sub.charAt(x) != sub.charAt(x)) {
+                x = n[x - 1];
+            }
+
+            if (sub.charAt(i) == sub.charAt(x)) {
+                x++;
+            }
+
+            n[i] = x;
+        }
+        return n;
+    }
+public static int kmp(String str, String sub) 
+{
+	//寻串函数
+        if(str == null || sub == null || str.length() == 0 || sub.length() == 0)
+        {
+            return -2;
+        }
+
+        int j = 0;
+        int[] n = next(sub);
+        for (int i = 0; i < str.length(); i++) {
+            while(j > 0 && str.charAt(i) != sub.charAt(j)){
+                j = n[j - 1];
+            }
+
+            if(str.charAt(i) == sub.charAt(j)){
+                j++;
+            }
+
+            if(sub.length() == j){
+                int index = i - j + 1;
+                return index;
+            }
+        }
+
+        return -1;//没有找到返回-1
+}
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		Scanner scan = new Scanner(System.in);
+		String str="";
+		String sub="";
+		System.out.println("请依次输入源串和子串，回车分隔");
+		str=scan.next();
+		sub=scan.next();
+		int index = kmp(str, sub);
+		if(index==-2)
+		{
+			System.out.println("空串无法判断");
+		}
+		else if(index == -1)
+		{
+			System.out.println("没有在源串中找到子串");
+		}
+		else
+		{
+			System.out.println("在源串中找到子串,其索引为"+index);
+		}
+		scan.close();
+	}
+
+}

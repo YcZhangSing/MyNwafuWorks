@@ -1,0 +1,105 @@
+package huisu;
+
+import java.util.Scanner;
+
+public class bagof01 {
+	static public int W;//背包容量
+	static public int n;//物品数目
+	static public int[] v;//价值列表
+	static public int[] w;//重量列表
+	static public int[] ord;//选择列表
+	static public int cp;//当前价值
+	static public int cw;//当前重量
+	static public int bestp;//当前最优价值
+	static int bound(int x)
+	{
+		int b=cp;
+		int cc=cw;
+		while(x<=n && w[x]<=(W-cc))
+		{
+			b+=v[x];
+			cc+=w[x];
+		}
+		if(x<=n)
+		{
+			b+=v[x]/w[x]*(W-cc);
+		}
+		return b;
+	}
+	static void cal(int x)//回溯递归函数
+	{
+		if(x>n) {
+			System.out.print("解向量为：");
+			for(int i=1;i<=n;++i)
+			{
+				System.out.print(ord[i]+" ");
+			}
+			System.out.println();
+			System.out.println("此价值为"+cp);
+			return;	
+		}
+		if(cw+w[x]<=W)
+		{
+			cw+=w[x];
+			cp+=v[x];
+			ord[x]=1;
+			bestp= bestp>cp? bestp:cp;
+			cal(x+1);//进入下一层
+			cw-=w[x];
+			cp-=v[x];
+			
+		}
+		/*
+		 * 递归到cal(x+1)回来的时候
+		 * 要判断是否递归右子树
+		 * 首先
+		 * cw-=w[x];
+			cp-=v[x];
+			清除痕迹
+			然后剪枝判断
+			if(bound(x)>bestp)
+			有递归的必要
+			ord[x]=0;
+			则不选x个物品
+			然后
+			cal(x+1);
+			进入下一层递归
+			如果没有递归的必要
+			此函数运行完毕，回退到上一级
+		 */
+		if(bound(x)>bestp)//递归右子树
+		{
+			ord[x]=0;//不选x个物品
+			cal(x+1);//进入下一层
+		}
+	}
+	public static void main(String[] args) {
+		
+		// TODO Auto-generated method stub
+		bestp=0;
+		cp=0;
+		cw=0;
+		Scanner scan = new Scanner(System.in);
+		W = scan.nextInt();
+		n= scan.nextInt();
+		v=new int[n+1];
+		w=new int[n+1];
+		ord=new int[n+1];
+		ord[0]=0;
+		for(int i=1;i<=n;++i)
+		{
+			ord[i]=0;
+			v[i]=scan.nextInt();//输入价值
+		}
+		for(int i=1;i<=n;++i)
+		{
+			
+			w[i]=scan.nextInt();//输入重量
+		}
+		scan.close();
+
+		cal(1);
+		System.out.println("\n综上，最大价值为"+bestp);
+	}
+
+}

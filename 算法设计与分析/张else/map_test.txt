@@ -1,0 +1,99 @@
+#include<bits/stdc++.h>
+//本程序在检测到 ‘#’ 时停止
+using namespace std;
+//MAX表示最大单词数
+#define MAX 10000
+//LenMax 表示最大单词长度
+#define LenMax 15
+//percent 表示看出现最多的前百分之多少的单词
+#define percent 10
+//创建单词类 number表示该单词出现次数，name表示该单词名称
+class word
+{
+public:
+    int number;
+    string name;
+    word(string a)
+    {
+        name=a,number=1;
+    }
+    word(string a,int b) {name=a,number=b;}
+    bool operator==(const word &a)const
+    {
+        if(name==a.name) return true;
+        return false;
+    }
+    bool operator <(const word &a)const
+    {
+        if(number<a.number) return true;
+        else if(number==a.number)
+        {
+            if(name>a.name) return true;
+        }
+        return false;
+    }
+};
+
+int main()
+{
+    //ch存放当前字符
+    char ch;
+    //string存放单词
+    string a;
+    //创建words存放所有单词
+//    word words[MAX];
+    set<word> words;
+    //judge判断是否停止
+    bool judge=true;
+    while(1)
+    {
+        //一个一个读字符，存入ch
+        ch=getchar();
+        //遇到大写全都转化成小写
+        if(ch>='A' && ch<='Z')
+            ch+='a'-'A';
+        if((ch>='a' && ch<='z') || ch=='_' || (ch>='0' && ch<='9'))
+        {
+            //单词长度小于于LenMax
+            if(a.size()<LenMax)
+                a+=ch;
+        }
+        else
+        {
+            //检测到 ‘#’ 将judge置false
+            if(ch == '#')
+                judge=false;
+            //a的长度大于0时运行，防止了连续两个字符的情况
+            if(a.size()!=0)
+            {
+                //定义judge2 用来判断该单词是否出现过
+                //遍历所有单词查看是否出现过该单词
+                auto it=find(words.begin(),words.end(),word(a));
+                if(it !=words.end())
+                {
+                    auto j=it->number;
+                    words.erase(it);
+                    j+=1;
+                    words.insert(word(a,j)); //次数加一
+                }
+                //没出现过 存入该单词sum加一
+                else
+                    words.insert(word(a));
+                //清空a
+                a.clear();
+            }
+            //遇到 ‘#’ 退出
+            if(!judge)
+                break;
+        }
+    }
+    //给所有单词出现次数排序 若次数相同按字母排序
+    //输出结果
+    cout<<words.size()<<endl;
+    auto q=words.end();
+    int i=0;
+    q--;
+    for(; i<words.size()/percent; q--,i++)
+        cout<<q->number<<":"<<q->name<<endl;
+    return 0;
+}

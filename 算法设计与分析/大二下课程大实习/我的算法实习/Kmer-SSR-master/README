@@ -1,0 +1,279 @@
+README
+======
+
+Table of Contents
+-----------------
+
+  I. Introduction
+ II. Installation Instructions
+III. Usage Instructions and Examples
+ IV. Funding and Acknowledgements
+ V. Contact
+
+
+I. Introduction
+---------------
+Kmer-SSR is a software tool developed to find Simple Sequence Repeats (SSRs) in
+a sequence (presumably of DNA or RNA). SSRs are sometimes referred to as Short
+Tandem Repeats (STRs) or microsatellites. SSRs are genetic markers with several
+interesting and meaningful biological implications. For example, SSRs can play
+significant roles in genome alignment against a reference and species
+identification.
+
+Many software tools exist for this purpose, but vary widely in utility. Some
+key features of our tool are as follows:
+
+    - Fast run time (linear, O(n), time complexity)
+    - Memory efficient (linear, O(n), space complexity)
+    - Finds all perfect repeats
+    - Simple command-line interface, convenient for scripting and when running
+      on High-Performance Computing (HPC) systems (note: no GUI provided)
+    - Easily parsed, tab-delimited output
+    - Runs on Linux (not Windows or Mac OS X)
+
+See our paper in __journal__ for further information:
+    http://sub.domain.tld/path/to/resource
+
+
+II. Installation Instructions
+-----------------------------
+To compile Kmer-SSR, simply type `make'. The binary will be in the `bin'
+directory. Your compiler must support C++11.
+
+To compile and install, type `make' followed by `make install'.  The binary
+will be in both the `bin' and `/usr/local/bin' directories (to change this,
+change the `PREFIX' variable in `Makefile').  
+
+To uninstall, type `make clean'.
+
+See `INSTALL' for further instructions.
+
+
+III. Usage Instructions and Examples
+-------------------------------------
+Please run the software with the `--help' option for complete usage instructions
+(i.e., type `kmer-ssr -h' or `kmer-ssr --help'). The format of the input and
+output files is described below; followed by usage examples.
+
+Input File Format:
+
+    Description:
+
+        The input file must be in Fasta format. The sequences may be on a single
+        line or multiple lines. The header and sequence lines must not contain
+        any leading or trailing whitespace. The header line must not contain any
+        tabs. The sequence lines must not contain whitespace between
+        nucleotides. Mixed-case nucleotides are acceptable; they will be
+        replaced with uppercase nucleotides for finding SSRs.
+
+    Good Example:
+
+        >sequence 1
+        AGCGTGTCGTGTACACGTGTACGTACGTACGATCGATGCTACGTAGCATCGATCGACGTATCGTATCGATC
+        CACGTGTACGTACGTACGATCGATGCTACGTAGCATCGATCGACGTATCGTATCGATCAGCGTGTCGTGTA
+        .
+        .
+        .
+        >sequence 2
+        cgtacgatcgatgctacgtagcatcgatcgacgtatcgtatcgatcagcgtgtcgtgtacacgtgtacgta
+        gatcgacgtatcgtatcgatcagcgtgtcgtgtacacgtgtacgtacgtacgatcgatgctacgtagcatc
+        .
+        .
+        .
+        >sequence 3
+        taTCgATCAGCGtGTCGTGTAcACGTGTACGTAcgtaCGAtCgATGCTACGTagcatCGATCGACGTATCG
+        cgtacgtacgATCGATGCTACGTaGCATCGaTCGaCGTAtCGTAtcgatcaGCGTGTCGTGTAcacgtgta
+        .
+        .
+        .
+
+Output File Format:
+
+    Description:
+
+        The output file is tab-delimited. Each row is a separate record. By
+        default, if no SSRs are found in a fasta sequence, no output record
+        will be present in the output file for that fasta sequence. When SSRs
+        are found, one output record will be present in the output file for
+        each SSR in that sequence. Each column contains a separate piece of
+        information for the output record. The columns (in order) are:
+
+            Sequence_Name, SSR, Repeats, Position (zero-based)
+
+        Each of the columns are described below:
+
+        Sequence_Name: The entire header line from the fasta file (excluding the
+                       leading `>' character) from which the SSR in the given
+                       output record is found.
+
+                  SSR: The repeating unit of an SSR. For example, `ACACAC' is
+                       an SSR with a repeating unit of `AC'.
+
+              Repeats: The number of times the repeating unit of an SSR repeats.
+                       For example, the repeating unit of `AC' from SSR `ACACAC'
+                       repeats 3 times.
+
+             Position: The zero-based position in the original fasta sequence
+                       where the SSR begins. For example, `ACACAC' begins at
+                       position 2 in the sequence `TGACACACGT'.
+
+        As a simple illustration of the output file, consider the following
+        input file and its respective output file:
+
+        Input:
+
+            >seq 1
+            TGACACACGT
+            >seq 2
+            acgtg
+            tgtca
+            cagtc
+
+        Output (formatted here for readability):
+
+            Sequence_Name   SSR   Repeats   Position (zero-based)
+            seq 1           AC    3         2
+            seq 2           GT    3         2
+            seq 2           CA    2         8
+
+
+Usage Examples:
+
+    Basic Usage Examples:
+
+        Example 1:
+        
+            kmer-ssr -i input.fasta -o output.tsv
+
+            Run Kmer-SSR on fasta sequences in `input.fasta' and write results to
+            `output.tsv'. This will use the default parameters; run the software
+            with `--help' to see the defaults and check if they meet your needs.
+        
+        Example 2:
+            
+            kmer-ssr -p 2-9 -r 3 -R 20 -i input.fasta -o output.tsv
+            
+            Run Kmer-SSR on fasta sequences in `input.fasta' and write results to
+            `output.tsv'.  Only SSRs meeting the parameters provided will be
+            included.  The meaning of each option is as follows:
+
+                -p        Search for SSRs with a period size of 2, 3, 4, 5, 6,
+                          7, 8, or 9. As examples: `AAAAAA...' and
+                          `ACGCAGTTGCACGCAGTTGC...' would not make the cutoff
+                          because `A' is shorter than 2 nucleotides and
+                          `ACGCAGTTGC' is longer than 9 nucleotides. However,
+                          `ACACAC...' and `AATCCTGGTAATCCTGGT...' would be
+                           included.
+                
+                -r, -R    The min (-r) and max (-R) times the repeating unit
+                          repeats.  As examples: `ACAC' and `ACACACACACACACACACACAC
+                          ACACACACACACACACACAC' (21 `AC' units) would not make the
+                          cutoff. However, `ACACAC' and `ACACACACACACACACACACACACAC
+                          ACACACACACACAC' (20 `AC' units) would be included.
+        
+        Example 3:
+
+            kmer-ssr -t 4 -i input.fasta -o output.tsv
+
+            Run Kmer-SSR on fasta sequences in `input.fasta' and write results to
+            `output.tsv'.  Use 4 threads of execution, instead of the default 1.
+
+        Example 4:
+
+            kmer-ssr -p 2-9 -r 3 -R 20 -t 4 -i input.fasta -o output.tsv
+
+            Run Kmer-SSR on fasta sequences in `input.fasta' and write results to
+            `output.tsv'. This is a combination of examples 2 and 3.
+
+
+    Extended Example:
+
+        The data for this extended example can be found in the `examples'
+        directory. The input fasta file is `input.fasta'. The output files are
+        `output_default.tsv' and `output.tsv'. The data and example are
+        fictitious, but was modified from real sequences. The numbers used for
+        min/max sequence length or any other parameter may not be biologically
+        realistic; however, they do conceptually represent a realistic
+        situation.
+
+        input.fasta: Each fasta sequence is a contig generated from a de novo
+                     assembly of whole exome sequencing reads. The file has 16
+                     fasta sequences.
+
+         output*.tsv: The output files from running Kmer-SSR as shown below.
+
+        One could just run Kmer-SSR with the defaults:
+
+            kmer-ssr -i input.fasta -o output_default.tsv
+
+        However, the defaults may not be the best parameters for your data.
+        Below is a reasonable command to use with this example data. Each
+        alteration from the default is explained and justified based on the
+        data in this example.
+
+            kmer-ssr -l 70 -L 300 -p 2-9 -r 2 -t 4 -f -i input.fasta -o output.tsv
+
+        -l 70    Do not search for SSRs in fasta sequences less than 70 bps in
+                 length. For sake of the example, we assume based on our reads
+                 and the assembler's parameters and intricacies that the
+                 resulting contigs should be equal to or longer than 70 bps.
+                 Anything shorter would be erroneous and not worth searching for
+                 SSRs.
+
+        -L 300   Do not search for SSRs in fasta sequences more than 300 bps in
+                 length. For sake of the example, we assume based on our reads
+                 and the assembler's parameters and intricacies that the
+                 resulting contigs should be equal to or shorter than 300 bps.
+                 Anything longer would be erroneous and not worth searching for
+                 SSRs.
+
+        -m 2     Do not report SSRs where the base unit is less than 2 bps
+                 in length. This decision must be made based on your research
+                 question(s) and what you deem biologically interesting.
+
+        -M 9     Do not report SSRs where the base unit is more than 9 bps
+                 in length. This decision must be made based on your research
+                 question(s) and what you deem biologically interesting.
+
+        -r 2     Do not report SSRs where the base unit repeats less than 2
+                 times. This decision must be made based on your research
+                 question(s) and what you deem biologically interesting.
+
+        -t 4     Use 4 threads of execution instead of the default 1. This must
+                 be based on the machine you run Kmer-SSR on. Obviously, it
+                 doesn't make sense to run with 9 threads on an 8 thread
+                 machine.
+
+        -f       Output the full sequence from the fasta file from which an SSR
+                 in a particular output record was found. This may be desirable
+                 if your downstream analysis requires knowing the full sequence
+                 from which the SSR was found. This option is intended to ease
+                 downstream analysis by removing the requirement to parse the
+                 original fasta file and the output file simultaneously. If you
+                 do not need this, do not use this option as it will radically
+                 increase the size of the output file.
+
+        If you inspect these two output files, you'll observe 12 output records
+        in `output_default.tsv' and 7 output records in `output.tsv'. Using the
+        custom parameters removed 6 output records; each were theoretically
+        erroneous results (the SSRs really were there in the fasta sequence,
+        but the fasta sequence wasn't valid). 1 additional output record was
+        added by using the custom parameters because the fasta sequence was
+        below the minimum length for processing under the default parameters.
+
+
+IV. Funding and Acknowledgements
+-------------------------------
+Funding for the research and production of this software was provided by
+startup funds to Dr. Perry Ridge.
+
+
+V. Contact
+-----------
+For questions, comments, concerns, feature requests, suggestions, etc., please
+contact:
+
+Pery Ridge, Ph.D. -- perry.ridge@byu.edu
+
+Note: For usage questions, please consult section `III. Usage Instructions and
+Examples' first.

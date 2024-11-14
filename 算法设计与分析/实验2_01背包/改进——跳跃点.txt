@@ -1,0 +1,92 @@
+package test;
+
+import java.util.Scanner;
+
+public class problem01 {
+	/*问题描述
+	 * n个物品，一个背包，物品i的价值为vi，重量为wi，背包容量为W。选取物品装入背包，使背包中所装入的物品总价值最大？
+	 * 其中，wi，W都是整数
+	 */
+	/*
+	 * 算法改进，因为在计算的时候，第i行的数据仅仅来自第一行，第i-1行之前的数据没有用处，所以可以仅仅用一个一维数组，dp[W+1]来动态计算。
+	 * 第i次计算的结果覆盖第i-1次中数组中的数据，直到第n次
+	 * 注意每次计算时候要倒推推，即从W到0循环计算
+	 */
+	public static int[] v;
+	public static int[] w;
+	public static int[] dp;
+	public static int W;
+	public static int n;
+	public static boolean cho[];
+	public static int getmax(int a,int b)
+	{
+		return a>b? a:b;
+	}
+	public static void C()
+	{
+		int t=0;
+		for(int i=1;i<=n;++i)//循环n-1次，dp数组将被覆盖n次；
+		{
+				t=dp[W];
+				for(int m=W;m>0;--m)
+				{
+					if(m>=w[i])
+					{
+						
+						dp[m]=getmax(dp[m],dp[m-w[i]]+v[i]);
+						
+					}
+				}
+			if(i!=1 && dp[W]!=t) cho[i]=true;
+		}
+	}
+	public static void Print()
+	{
+		System.out.println("背包存放最大价值为"+dp[W]);
+		System.out.println("存放物品序号如下:");
+		for(int i=1;i<=n;++i)
+		{
+			if(cho[i]) System.out.print(i+" ");
+		}
+		
+	}
+	public static void main(String[] args) {
+		
+		// TODO Auto-generated method stub
+		Scanner scan = new Scanner(System.in);
+		//n= scan.nextInt();
+		System.out.println("请依次输入背包容量以及物品数量");
+		W = scan.nextInt();
+		n = scan.nextInt();
+		v= new int[n+1];
+		w = new int[n+1];
+		dp = new int[W+1];
+		cho = new boolean[n+1];
+		for(int i=0;i<=n;++i)
+		{
+			cho[i]=false;
+			dp[i]=0;
+		}
+		for(int i=n+1;i<=W;++i)
+		{
+			dp[i]=0;
+		}
+		System.out.println("请依次输入物品价值");
+		v[0]=0;
+		w[0]=0;
+		for(int i=1;i<=n;++i)
+		{
+			v[i]= scan.nextInt();
+		}
+		System.out.println("请依次输入物品重量");
+		for(int i=1;i<=n;++i)
+		{
+			w[i]=scan.nextInt();
+		}
+		//System.out.println("开始计算");
+		//数据读入完毕，dp数组初始化完毕;
+		C();//递推计算，填写dp数组;
+		Print();//回溯数组，输出结果
+	}
+
+}

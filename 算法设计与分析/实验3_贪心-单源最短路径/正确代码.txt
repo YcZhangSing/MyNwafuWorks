@@ -1,0 +1,98 @@
+package test;
+import java.util.HashSet;
+
+import java.util.Set;
+
+public class dijkstra {
+		public static int max=1000000;
+		public static int n;//图中结点个数
+		public static int s;//源点编号
+		public static int[][] G;
+		public static int[] dis ;
+		public static int[] pre;
+		public static Set<Integer> found = new HashSet<Integer>();
+		public static void main(String[] args) 
+		{
+			n=5;
+			s=1;
+			G=new int[n+1][n+1];
+			dis=new int[n+1];
+			pre=new int[n+1];
+			for(int i=1;i<=n;++i)
+			{
+				dis[i]=max;
+				pre[i]=1;
+				for(int j=1;j<=n;++j)
+				{
+					G[i][j]=max;
+					G[i][i]=0;
+				}
+			}
+			G[1][2]=10;
+			G[1][4]=30;
+			G[1][5]=100;
+			G[2][3]=50;
+			G[3][5]=10;
+			G[4][5]=60;
+			G[4][3]=20;
+		single_source(G,n,s);
+		for(int i=2;i<=n;++i)
+		{
+			System.out.println("到结点"+i+"的最短路径长度为"+dis[i]);
+			System.out.println("路径如下：");
+			System.out.print(i);
+			int index= pre[i];
+			while(true)
+			{
+				
+				System.out.print(" <- "+pre[index]);
+				index= pre[index];
+				if(index==1) break;
+			}
+				
+			System.out.println();
+		}
+		
+	}
+		public static void single_source(int[][] G, int n,int s)
+		{
+			//G是邻接矩阵，n为矩阵大小，s为源点
+		
+			int u=s;
+			for(int i=1;i<n;++i)
+			{
+				dis[i]=G[1][i];
+			}
+			dis[1]=0;
+			found.add(1);
+			int min=max;
+			while(found.size()<n)
+			{
+				min=max;
+				for(int i=1;i<=n;++i)
+				{
+					//System.out.println(u+i);
+					if(G[u][i]+dis[u]<dis[i] && !found.contains(i)) 
+						{
+							dis[i]=G[u][i]+dis[u];
+							pre[i]=u;
+						}
+						
+				}
+
+				for(int x=1;x<=n;++x)
+				{
+					
+					if(min>dis[x] && !found.contains(x))
+					{
+						min=dis[x];
+						u = x;
+					}
+				}
+				found.add(u);
+				
+			}
+			
+		}
+
+}

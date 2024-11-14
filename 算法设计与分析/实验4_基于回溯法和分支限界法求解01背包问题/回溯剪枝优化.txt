@@ -1,0 +1,117 @@
+package huisu;
+
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Scanner;
+
+class obj implements Comparable<obj>
+{
+	int v;
+	int w;
+	double aver;
+	int no;//物品编号
+	public obj()
+	{
+		
+	}
+	public obj(int vv,int ww,int n)
+	{
+		v=vv;
+		w=ww;
+		aver=v/ww;
+		no=n;
+	}
+	@Override
+	public int compareTo(obj o) {
+		// TODO Auto-generated method stub
+		if(this.aver>o.aver) return -1;
+		else return 1;
+	}
+	
+}
+public class youhua {
+	static public int n;
+	static public int W;
+	static public int cp;//当前价值
+	static public int cw;//当前重量
+	static public int[] ord;//选择列表
+	static public int bestp;//当前最优价值
+	static public List<obj> la = new LinkedList<>();
+	
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		Scanner scan = new Scanner(System.in);
+		n = scan.nextInt();
+		W= scan.nextInt();
+		ord = new int[n];
+		
+		for(int i=0;i<n;++i)
+		{
+			int vv=scan.nextInt();
+			int ww=scan.nextInt();
+			la.add(new obj(vv,ww,i));
+		}
+		scan.close();
+	//输入数据
+		Collections.sort(la);
+		cal(0);
+		System.out.println("\n综上，最大价值为"+bestp);
+	}
+	
+	
+	
+	
+	static public double bound(int x)
+	{
+		double b=cp;
+		int w = cw;
+		for(int i=x+1;i<n;++i)
+		{
+			if(la.get(i).w+w<W)
+			{
+				w+=la.get(i).w;
+				b+=la.get(i).v;
+			}
+			else
+			{
+				b+=la.get(i).v/la.get(i).w*(W-w);
+				return b;
+			}
+		}
+		return b;
+	}
+	
+	static public void cal(int x)
+	{
+		
+		if(x>n-1)
+		{
+			System.out.print("解向量为：");
+			for(int i=0;i<n;++i)
+			{
+				System.out.print(ord[i]+" ");
+			}
+			System.out.println("此时背包的价值为: "+cp);
+			return;
+		}
+		if(cw+la.get(x).w<=W)
+		{
+			cw+=la.get(x).w;
+			cp+=la.get(x).v;
+			ord[la.get(x).no]=1;
+			
+			bestp = bestp>cp? bestp:cp;
+			
+			cal(x+1);
+			cw-=la.get(x).w;
+			cp-=la.get(x).v;
+		}
+		if(bound(x)>bestp)
+		{
+			ord[la.get(x).no]=0;
+			cal(x+1);
+		}
+	}
+
+}
