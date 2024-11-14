@@ -1,0 +1,6 @@
+0:0:0:0:0:0:0:1 - - [19/Dec/2022:22:24:19 +0800] "GET /StuMS HTTP/1.1" 302 - http-bio-80-exec-2 0
+0:0:0:0:0:0:0:1 - - [19/Dec/2022:22:24:21 +0800] "GET /StuMS/ HTTP/1.1" 200 812 http-bio-80-exec-3 1864
+0:0:0:0:0:0:0:1 - - [19/Dec/2022:22:24:21 +0800] "GET /favicon.ico HTTP/1.1" 404 - http-bio-80-exec-4 0
+0:0:0:0:0:0:0:1 - - [19/Dec/2022:22:24:28 +0800] "GET /StuMS/Controller?action=list HTTP/1.1" 200 5477 http-bio-80-exec-5 700
+0:0:0:0:0:0:0:1 - - [19/Dec/2022:22:24:41 +0800] "GET /StuMS/Controller?id=27&action=delete HTTP/1.1" 302 - http-bio-80-exec-6 571
+0:0:0:0:0:0:0:1 - - [19/Dec/2022:22:24:41 +0800] "GET /StuMS/Controller HTTP/1.1" 200 5154 http-bio-80-exec-7 534

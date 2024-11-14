@@ -1,0 +1,90 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+abstract class HttpServlet
+abstract class GenericServlet
+interface ServletConfig
+interface Servlet
+interface Serializable
+interface EventListener
+interface ServletRequestListener
+interface Filter
+class LoginFilter
+class DBProcess
+{
+    void save()
+    List getStuList()
+    List getCourList()
+    List getTeaList()
+    List getXuankeList()
+    List getGradeList()
+    Course getCoursebyID()
+    Grade getGrade()
+    ResultSet getRS()
+}
+note right:JavaBean类，所有业务逻辑在此类中实现
+
+class Course
+{
+    String cID
+    String CourseName
+    String College
+    String TeacherID
+}
+note bottom:数据库实体类
+class Student
+{
+    String sID
+    String StudentName
+    String College
+    String Class
+}
+note bottom:数据库实体类
+
+class Teacher
+{
+    String tID
+    String TeacherName
+    String College
+}
+note bottom:数据库实体类
+class Xuanke
+{
+    String cID
+    String StudentID
+}
+note bottom:数据库实体类
+class Grade
+{
+    String cID
+    String StudentID
+    double cGrade
+}
+note bottom:数据库实体类
+class DBManagerListener
+{
+    void requestDestroyed()
+    void requestInitialized()
+}
+note top:数据库监听器，当系统启动时自动建立数据库链接
+
+class Controller
+{
+    void doPost()
+    void doGet()
+}
+note left:Servlet控制器，负责处理前端页面发来的Post和Get请求
+Serializable<|..GenericServlet
+Servlet<|..GenericServlet
+ServletConfig<|..GenericServlet
+HttpServlet<--GenericServlet
+Controller<--HttpServlet
+EventListener<--ServletRequestListener
+DBManagerListener..|>ServletRequestListener
+DBProcess..>Student
+DBProcess..>Course
+DBProcess..>Teacher
+DBProcess..>Grade
+DBProcess..>Xuanke
+LoginFilter..|>Filter
+@enduml

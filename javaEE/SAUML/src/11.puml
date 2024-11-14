@@ -1,0 +1,24 @@
+@startuml
+'https://plantuml.com/deployment-diagram
+ node 考试管理系统客户端 as node1 {
+ component 客户端页面 as con1
+ component 成绩管理 as con2
+  component 登陆 as con3
+   component 系统管理 as con4
+    component 选课管理 as con5
+  }
+  node 学生考试系统 as node2{
+   component 学生考试系统 as con6
+  }
+ database 课程考试信息数据库 as db
+con1-[dashed]->con2
+con1-[dashed]->con4
+con1-[dashed]->con5
+con2-[dashed]->con3
+con4-[dashed]->con3
+con5-[dashed]->con3
+con1-[dashed]->con6
+con6-[dashed]->db
+node2--db
+node2--node1
+@enduml

@@ -1,0 +1,4 @@
+services\BookService.class
+mapper\BookMapper.class
+controller\BookController.class
+entity\Book.class

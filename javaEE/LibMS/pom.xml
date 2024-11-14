@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>org.example</groupId>
+    <artifactId>StuMS</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <!--工程打包类型为 war 包-->
+    <packaging>war</packaging>
+    <repositories>
+        <!--配置仓库地址-->
+        <repository>
+            <id>central</id>
+            <name>aliyun maven</name><!--配置为国内仓库-阿里云-->
+            <url>http://maven.aliyun.com/nexus/content/groups/public/</url>
+            <layout>default</layout>
+        </repository>
+    </repositories>
+
+    <dependencies>
+        <!--Java web 依赖包-->
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>4.0.0</version>
+            <scope>provided</scope>
+        </dependency>
+            <dependency>
+                <groupId>mysql</groupId>
+                <artifactId>mysql-connector-java</artifactId>
+                <version>8.0.25</version>
+            </dependency>
+        <dependency>
+            <groupId>jstl</groupId>
+            <artifactId>jstl</artifactId>
+            <version>1.2</version>
+        </dependency>
+        <dependency>
+            <groupId>taglibs</groupId>
+            <artifactId>standard</artifactId>
+            <version>1.1.2</version>
+        </dependency>
+
+
+    </dependencies>
+
+    <build>
+        <plugins>
+            <!--            <plugin>-->
+            <!--                <groupId>org.eclipse.jetty</groupId>-->
+            <!--                <artifactId>jetty-maven-plugin</artifactId>-->
+            <!--                <version>9.3.0.v20150612</version>-->
+            <!--                <configuration>-->
+            <!--                    <webAppConfig>-->
+            <!--                        <contextPath>/</contextPath>&lt;!&ndash;上下文路径&ndash;&gt;-->
+            <!--                    </webAppConfig>-->
+            <!--                    <httpConnector>-->
+            <!--                        <port>80</port>-->
+            <!--                    </httpConnector>-->
+            <!--                </configuration>-->
+            <!--            </plugin>-->
+            <plugin>
+                <groupId>org.apache.tomcat.maven</groupId>
+                <artifactId>tomcat7-maven-plugin</artifactId>
+                <version>2.2</version>
+                <configuration>
+                    <port>80</port>
+                    <path>/LibMS</path>
+                </configuration>
+            </plugin>
+
+
+
+
+        </plugins>
+    </build>
+
+</project>

@@ -1,0 +1,15 @@
+@startuml
+'https://plantuml.com/use-case-diagram
+
+
+:教师: as stu
+usecase (登陆系统) as u1
+usecase (成绩管理) as u2
+stu ->u1 :<<uses>>
+u1 -> (退出):<<extends>>
+u1 --> u2 :<<extends>>
+u2 ->(提交成绩):<<include>>
+u2 -->(查询成绩列表):<<include>>
+u2 -->(查询考试课程信息):<<include>>
+note left of stu :教师用例图
+@enduml

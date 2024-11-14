@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zhangyc.mapper.BookMapper">
+
+
+    <select id="listAll" resultType="hashmap">
+        select * from books
+    </select>
+
+    <select id="getById" parameterType="int" resultType="com.zhangyc.bean.Book">
+        select  * from books where id= #{id}
+    </select>
+    <select id="getByISBN" parameterType="String" resultType="com.zhangyc.bean.Book">
+        select * from books where ISBN=#{ISBN}
+    </select>
+
+    <insert id="add" parameterType="map">
+        insert into books(ISBN,name,publisher,author,price,pdate) values(#{ISBN}, #{name}, #{publisher}, #{author},#{price},#{pdate})
+    </insert>
+
+    <delete id="delbyid" parameterType="int">
+        delete from books where id = #{id}
+    </delete>
+
+    <update id="update" parameterType="map">
+        update books set ISBN = #{ISBN},books.name=#{name}, publisher=#{publisher},author=#{author},price=#{price},pdate=#{pdate}
+        where id=#{id}
+    </update>
+
+    <!--动态SQL-->
+    <select id="DtSQL" parameterType="map" resultType="com.zhangyc.bean.Book">
+        select  * from books where 1=1
+        <if test="name!=null and name!=''">and book_name like concat('%',#{name},'%')</if>
+        <if test="author!=null and author!=''">and author like concat('%',#{author},'%')</if>
+        <if test="publisher!=null and publisher!=''">and publisher like concat('%',#{publisher},'%')</if>
+        <if test="ISBN!=null and ISBN!=''">and ISBN like concat('%',#{ISBN},'%') </if>
+        <if test="price!=null and price!=''">and price between #{price}-20.0 and #{price}+20.0 </if>
+        <if test="pdate!=null and pdate!=''">and pdate between date_add('${pdate}',INTERVAL -365 DAY) and date_add('${pdate}',INTERVAL 365 DAY)</if>
+
+    </select>
+
+</mapper>
+

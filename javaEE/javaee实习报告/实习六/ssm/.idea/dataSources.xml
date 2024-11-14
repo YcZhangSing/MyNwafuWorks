@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
+    <data-source source="LOCAL" name="JavaEEPtc@81.70.54.158" uuid="1450a706-9b12-492a-ac86-8d5809262f07">
+      <driver-ref>mysql.8</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
+      <jdbc-url>jdbc:mysql://81.70.54.158:3306/JavaEEPtc?useUnicode=true</jdbc-url>
+    </data-source>
+  </component>
+</project>

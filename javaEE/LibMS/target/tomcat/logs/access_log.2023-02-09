@@ -1,0 +1,7 @@
+0:0:0:0:0:0:0:1 - - [09/Feb/2023:15:39:11 +0800] "GET /LibMS HTTP/1.1" 302 - http-bio-80-exec-1 0
+0:0:0:0:0:0:0:1 - - [09/Feb/2023:15:39:11 +0800] "GET /LibMS/ HTTP/1.1" 200 881 http-bio-80-exec-3 408
+0:0:0:0:0:0:0:1 - - [09/Feb/2023:15:39:11 +0800] "GET /favicon.ico HTTP/1.1" 404 - http-bio-80-exec-4 0
+0:0:0:0:0:0:0:1 - - [09/Feb/2023:15:39:15 +0800] "GET /LibMS/Controller?action=login HTTP/1.1" 200 2697 http-bio-80-exec-5 230
+0:0:0:0:0:0:0:1 - - [09/Feb/2023:15:39:20 +0800] "POST /LibMS/Controller?action=check HTTP/1.1" 302 - http-bio-80-exec-6 312
+0:0:0:0:0:0:0:1 - - [09/Feb/2023:15:39:20 +0800] "GET /LibMS/Controller?action=list HTTP/1.1" 200 1564 http-bio-80-exec-7 136
+0:0:0:0:0:0:0:1 - - [09/Feb/2023:15:39:32 +0800] "GET /LibMS/test.jsp HTTP/1.1" 200 335 http-bio-80-exec-8 56

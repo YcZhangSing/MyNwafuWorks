@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="LeetcodeEditor">
+    <option name="projectConfig">
+      <map>
+        <entry key="$PROJECT_DIR$/../../../java/leetcode/src/leetcode/editor/cn/P790_DominoAndTrominoTiling .java">
+          <value>
+            <LeetcodeEditor>
+              <option name="contentPath" value="$PROJECT_DIR$/../../../java/leetcode/src/leetcode/editor/cn/doc/content/P790_DominoAndTrominoTiling .md" />
+              <option name="frontendQuestionId" value="leetcode.cn790" />
+              <option name="host" value="leetcode.cn" />
+              <option name="path" value="$PROJECT_DIR$/../../../java/leetcode/src/leetcode/editor/cn/P790_DominoAndTrominoTiling .java" />
+              <option name="titleSlug" value="domino-and-tromino-tiling" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+</project>
