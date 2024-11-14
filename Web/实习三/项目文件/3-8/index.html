@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<style>
+		#div1{
+			display: flex;
+			flex-direction: column;
+			margin: auto;
+			
+		}
+		#div2{
+			display: flex;
+			flex-direction: column;
+			margin: auto;
+		}
+		#main{
+			height: 400px;
+			width: 400px;
+			margin: auto;
+		}
+		h2{
+			margin: auto;
+		}
+		body{
+			border-style: solid;
+			border-color: black;
+			border-width: thin;
+		}
+		</style>
+		
+	</head>
+	<body>
+		<div id="main">
+		<div id="div1">
+		<h2>请输入年份</h2>	
+		<input type="text" name="txtYear" id="txtYear"> 
+		</div>
+		<div id="div2">
+		<input type="button" value="判断" onclick="testLeapYear()"> 
+		<script>  
+		function testLeapYear()
+		{  
+		//你的代码 
+		var y = document.getElementById("txtYear").value;
+		if(isNaN(y))
+		{
+			alert("请输入正确年份");
+			return;
+		}
+		if(y<0)
+		{
+			alert("计算公元前时间的功能暂未开启");
+			return;
+		}
+		if(y%4!=0 || y%100==0 && y%400!=0)
+		{
+			alert(y+"不是润年!");
+			return;
+		}
+		alert(y+"是润年!");
+		return;
+		} 
+		</script> 
+	</body>
+</html>

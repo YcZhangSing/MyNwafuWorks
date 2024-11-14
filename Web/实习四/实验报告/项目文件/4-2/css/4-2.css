@@ -1,0 +1,115 @@
+body{
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	
+}
+#main{
+	margin: auto;
+	display: flex;
+	flex-direction: column;
+	/* width: 100px; */
+	/* height: 320px; */
+
+}
+#charnot,#charuse,#code{
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+}
+#tres{
+	text-align: center;
+}
+button{
+	background-color: skyblue;
+	justify-content: center;
+	margin: auto;
+}
+input[type=text]{
+	color: dimgrey;
+	height: 10px;
+}
+
+#d1,#d2{
+	display: flex;
+	flex-direction: row;
+	/* padding: 8px; */
+	border-bottom: darkgreen 1.1px solid;
+}
+.check{
+	background-color: gainsboro;
+	padding: 8px;
+	border-right: darkgreen 1.1px solid;
+}
+
+.check0{
+	/* background-color: #C0C0C0; */
+	padding: 8px;
+}
+#wei{
+	padding-right: 80px;
+}
+#d3{
+	display: flex;
+	flex-direction: row;
+	/* padding: 8px; */
+	align-items: stretch;
+	/* border: mediumseagreen 1px solid; */
+	border-bottom: darkgreen 1.1px solid;
+}
+#button{
+	display: flex;
+	flex-direction: row;
+	text-align: center;
+	justify-content: center;
+	padding: 7px;
+	border-bottom: darkgreen 1.1px solid;
+}
+form{
+	border: darkgreen 1.1px solid;
+}
+#tbutton{
+	border: white 0px solid;
+	height: 20px;
+	color: white;
+	width: 70px;
+	/* font-weight: 700; */
+	background-color: deepskyblue;
+	border-radius: 8%;
+}
+.labl{
+	text-align: center;
+	 background-color: silver; 
+}
+#res{
+	justify-content: center;
+	display: flex;
+	flex-direction: row;
+	padding: 10px;
+	
+}
+.labl_r{
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-start;
+	padding:5px 18px;
+} 
+th,td{
+	padding: 0;
+	height: 1px;
+	text-align: right;
+}
+table{
+	padding: 0;
+}
+#ex{
+	width: 66px;
+	margin: 0 ;
+	border-left: darkgreen 1.1px solid;
+	border-right: darkgreen 1.1px solid;
+}
+#tex{
+	margin: 0;
+	width: 66px;
+}
+

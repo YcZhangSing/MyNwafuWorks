@@ -1,0 +1,28 @@
+
+			h1,p,span,li {
+				color: #808080;
+			}
+			#wider{
+				font-weight: bold;
+			}
+			
+			#left {
+				float: left;
+				width: 17.5%;
+			}
+
+			#center {
+				width: 17.5%;
+				float: left;
+				height: 100px;
+			}
+
+			#right {
+				width: 65%;
+				float: left;
+			}
+			#left
+			{
+				height: 100px;
+			}
+

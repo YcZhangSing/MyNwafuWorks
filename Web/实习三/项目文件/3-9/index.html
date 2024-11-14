@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+	</head>
+	<body>
+		<form name="frmLx1" method="post" onSubmit="return funCheck()">  
+		姓名：<input type="text" name="txtName"><br>  
+		<input type="submit" value="注册">  
+		</form>  
+		<script>  
+		function funCheck(){  
+				//你的代码
+				var name = frmLx1.txtName.value;
+				console.log(name);
+				if(name == "")
+				{
+					alert("请输入名字");
+					return false;
+				}
+				else{
+					alert("提交成功！");
+					return true;
+				}
+		}  
+		</script>  
+	</body>
+</html>

@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<link href="css/4-2.css" rel="stylesheet" type="text/css" />
+		<title>实习4-2</title>
+	</head>
+	
+	<body>
+		<div id="main">
+			<form>
+				<div id="d1">
+					<div class="check">
+						所用字符
+					</div>
+					<div class="labl_r">
+						<input type="checkbox" id="1" value="1">a-z&nbsp;&nbsp;
+						<input type="checkbox" id="2" value="2">A-Z&nbsp;&nbsp;
+						<input type="checkbox" id="3" value="3">0-9&nbsp;&nbsp;
+						<input type="checkbox" id="4" value="4">&nbsp;
+						<input type="text" name="!@#$%" id="44" value="!@#$%">
+					</div>
+				</div>
+
+				<div id="d2">
+					<div class="check">排除字符</div>
+	
+					<div class="labl_r">	
+					<input type="checkbox" id="5" value="5">
+					<input type="text"id="55" value="illo0O">
+					</div>
+				</div>
+				
+				<div id="d3">
+					<div class="check" id="len">密码长度</div>
+		
+					<div class="labl_r" id="wei">
+						<select id ="code_l"> 
+						<option value="6">6</option>
+						<option value="7">7</option>
+						<option value="8">8</option>
+						<option value="9">9</option>
+						</select>位
+					</div>
+				
+
+					<div id="ex" class="check" >密码数量</div>
+	
+					<div class="labl_r">
+						<select id ="code_c">
+						<option value="3">3</option>
+						<option value="4">4</option>
+						<option value="5">5</option>
+						<option value="6">6</option>
+						</select>个
+					</div>
+					
+				</div>
+					<div id="button">
+						<input id="tbutton" type="button" onclick="cal()" value="生成密码">
+					</div>
+
+					<div id="res">
+						  <textarea id ="tres" name="message" rows="6" cols="48"></textarea>
+					</div>
+	
+			
+		
+		</form>
+		</div>
+		<script>
+		function cal()
+		{
+			count=0;
+			RES=document.getElementById("tres");
+			RES.innerHTML="";
+			RES.value="";
+			len=document.getElementById("code_l").value;
+			console.log(len);
+			num=document.getElementById("code_c").value;
+			console.log(num);
+			src="";
+			// console.log(src[0]);
+			tem="";
+			code="";
+			j=1;
+			flag=false;
+			for(j=1;j<=5;++j)
+			{
+				if(document.getElementById(j).checked == true)
+				{
+					if(j==1)
+					{
+						count++;
+						src=src+"abcdefghijklmnopqrstuvwxyz";
+					}
+					else if(j==2)
+					{
+						count++;
+						src=src+"ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+					}
+					else if(j==3)
+					{
+						count++;
+						src=src+"0123456789";
+					}
+					else if(j==4)
+					{
+						count++;
+						src=src+document.getElementById("44").value.toString();
+					}
+					else if(j==5)
+					{
+						tem=document.getElementById("55").value;
+						flag=true;
+					}
+				}
+			}
+			i=1;
+			if(count == 0)
+			{
+				alert("请正确勾选密码组成");
+				return;
+			}
+			for(i=1;i<=num;++i)
+			{
+				
+				code="生成的第"+i+"个密码是： ";
+				li=0;
+				for(li=0;li<len;++li)
+				{
+					x = Math.floor(Math.random() * src.length);
+					// console.log(tem.indexOf(src[x]));
+					if(flag == true)
+					{
+						if(tem.indexOf(src[x]) != -1)
+						{
+							li--;
+							continue;
+						}
+					}
+					code=code+src[x];
+				}
+				console.log(code);
+				// code+="\n";
+				RES.value = RES.value+code;	
+				RES.value = RES.value+"\n";
+			}
+			src="";
+		}
+		</script>
+	</body>
+</html>

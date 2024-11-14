@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>周次判断</title>
+		<style>
+		#f,#s1,#s2{
+			display: flex;
+			flex-direction: column;
+			text-align: center;
+			margin: auto;
+		}
+		button{
+			width: 100px;
+			margin: auto;
+		}
+		</style>
+	</head>
+	<body>
+		<div id="f">
+			<h3>请输入开学日期</h3>
+			<div id="s1">
+				<table>
+					<tr>
+						<td><input id="yy" placeholder="1900"/></td>
+						<td><p>年</p></td>
+						<td><input id="mm" placeholder="1"/></td>
+						<td><p>月</p></td>
+						<td><input id="dd" placeholder="11"/></td>
+						<td><p>日</p></td>
+					</tr>
+				</table>
+			</div>
+			
+			<button onclick="cal()">确定</button>
+			<div id="s2">
+				
+			</div>
+		</div>
+		<script>
+		function cal()
+		{
+			var k="";
+			k=k+document.getElementById("yy").value+"/";
+			k=k+document.getElementById("mm").value+"/";
+			k=k+document.getElementById("dd").value;
+			var x ="当前日期为："
+			var cdate = new Date();
+			var week=0;
+			var day=0;
+			x=x+cdate.toLocaleString();
+			x=x+"<br>";
+			var kdate = new Date(k);
+			day=cdate.getDay();
+			week = parseInt((cdate.getTime()-kdate.getTime())/604800000)+1;
+			x=x+"当前是第"+week+"周,今天周"+day+"<br>";
+			document.getElementById("s2").innerHTML=x;
+		}
+		</script>
+	</body>
+</html>

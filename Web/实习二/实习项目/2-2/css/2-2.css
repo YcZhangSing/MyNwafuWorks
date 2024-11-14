@@ -1,0 +1,115 @@
+#pearson
+{
+	float: right;
+	width: 180px;
+	height: 60px;
+	padding-right: 8%;
+	padding-top: 5%;
+}
+body{
+	display: flex;
+	justify-content: center;
+}
+#qh{
+	width: 90px;
+	height: 30px;
+}
+#publisher{
+	padding-right: 45px;
+	float: right;
+	align-items: center;
+	text-align: center;
+	display: flex;
+	flex-direction: row;
+	transform: translateY(80px);
+}
+#version{
+	font-size: large;
+	float: left;
+	background-color: red;
+	color: white;
+	height: 20px;
+	text-align: center;
+	padding: 10px;
+	width: 270px;
+	transform: rotate(45deg) translateX(-35px) translateY(129px);
+}
+#main{
+	border-color: black;
+	border-style: solid;
+	border-width: thin;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+}
+/* #lddq{
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+} */
+#xxhtml{
+	
+	display: flex;
+	flex-direction: row;
+	margin: auto;
+	justify-content: center;
+	align-items: center;
+}
+#xx{
+	font-size: 100px;
+}
+#html
+{
+	font-size: 150px;
+	color: darkolivegreen;
+	font-weight: bolder;
+}
+#web{
+	font-size:x-large;
+	font-weight: 630;
+	
+}
+
+#word{
+	margin: auto;
+	text-align: center;
+	padding: 0 50px;
+}
+
+#down{
+	display: flex;
+	flex-direction: row;
+	margin: 0 auto;
+	justify-content: center;
+}
+#list{
+	font-size:20px;
+	padding-right: 3vw;
+}
+#author{
+	
+	padding-left: 3vw;
+	text-align: right;
+	font-size: 20px;
+	font-weight: bold;
+}
+#flower{
+	border-radius: 50%;
+	height: 100%;
+	width: 100%;
+}
+#lotus{
+	/*padding-top: 5vw;*/
+	margin: auto;
+	height: 400px;
+	width: 400px;
+}
+#listpic{
+	height: 1em;
+	width: 1em;
+}
+#bot
+{
+	overflow: hidden;
+	height: 130px;
+}

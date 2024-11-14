@@ -1,0 +1,96 @@
+
+#pic{
+	width: 1505px;
+	display: flex;
+	flex-direction: row;
+	/* flex-grow: 1; */
+	flex-wrap: wrap;
+	margin: auto;
+}
+
+#con0:hover{
+	 transform: rotate(10deg);
+}
+#con1:hover{
+	  transform: rotate(-10deg);
+}
+#con2:hover{
+	  transform: rotate(10deg);
+}
+#con3:hover{
+	  transform: rotate(-10deg);
+}
+#con0{
+width: 300px;
+height: 300px;
+position: relative;
+background-size: 100% 100%;
+animation-name: fcon0;
+animation-duration: 8s;
+animation-fill-mode: forwards;
+animation-delay: 1s;
+/* transition: width 2s, height 2s; */
+transition:transform 2s;
+}
+
+#con1{
+
+width: 300px;
+height: 300px;
+position: relative;
+background-size: 100% 100%;
+animation-name: fcon1;
+animation-duration: 3s;
+animation-fill-mode: forwards;
+animation-delay: 0.6s;
+transition:transform 2s;
+}
+
+#con2{
+background-image:;
+width: 300px;
+height: 300px;
+position: relative;
+background-size: 100% 100%;
+animation-name: fcon2;
+animation-duration: 3s;
+animation-fill-mode: forwards;
+animation-delay: 2.5s;
+transition:transform 2s;
+}
+
+#con3{
+background-image:;
+width: 300px;
+height: 300px;
+position: relative;
+background-size: 100% 100%;
+animation-name: fcon3;
+animation-duration: 3s;
+animation-fill-mode: forwards;
+animation-delay: 4.5s;
+transition:transform 2s;
+}
+
+@keyframes fcon0 {
+  0%   {background-image: url(../img/flower1.JPG); left:0px; top:0px;}
+  25%  {background-image:url(../img/flower2.JPG); left:400px; top:0px;}
+  50%  {background-image: url(../img/flower3.JPG); left:800px; top:0px;}
+  75%  {background-image: url(../img/flower4.JPG); left:1200px; top:0px;}
+  100% {background-image: url(../img/flower4.JPG); left:1200px; top:0px;}
+}
+ @keyframes fcon2 {
+	
+ from{background-image: ; left:-150px ;/* width: 360px; height: 360px; */}
+ to {background-image: url(../img/flower2.JPG); left:-200px;/* width: 300px; height: 300px; */}
+} 
+@keyframes fcon1 {
+	
+  from{background-image: ; left:-250px;width: 360px; height: 360px;}
+  to {background-image: url(../img/flower1.JPG); left:-300px;width: 300px; height: 300px;}
+}
+ @keyframes fcon3 {
+	
+ from{background-image: ; left:-150px;width: 360px; height: 360px;}
+ to {background-image: url(../img/flower3.JPG); left:-100px;width: 300px; height: 300px;}
+} 

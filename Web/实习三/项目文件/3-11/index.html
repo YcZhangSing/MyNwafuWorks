@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>图片轮播</title>
+		<style>
+		body
+		{
+			display: flex;
+			flex-direction: column;
+			margin: auto;
+		}
+		p
+		{
+			margin-top: 10px;
+			border-radius: 20%;
+		}
+		#topd
+		{
+			height: 500px;
+			margin: auto;
+			text-align: center;
+			font-size: 256px;
+			color: white;
+			font-weight: 200;
+		}
+		#picdiv
+		{
+			height: 2600px;
+			width: 1200px;
+			margin: auto;
+			background-image: url(img/7.jpg);
+			background-repeat: no-repeat;
+		}
+		#bott
+		{
+			padding-top: 30px;
+			display: flex;
+			flex-direction: row;
+			margin: auto;
+		}
+		.cir
+		{
+			background-color: white;
+			border-radius: 100%;
+			border-style: solid;
+			border-width: 2px;
+			border-color: dimgrey;
+			width: 55px;
+			height: 55px;
+		}
+		#cir0
+		{
+			background-color: dimgrey;
+		}
+		</style>
+		
+	</head>
+	
+	<body onload="run()">
+		
+		<div id="topd">
+			<p style="background-color:MediumSeaGreen;">图片轮播</p>
+		</div>
+		<div id="picdiv">
+			&nbsp;
+		</div>
+		<div id="bott">
+			<div class="cir" id="cir0">&nbsp;
+			</div>
+			<div class="cir" id="cir1">&nbsp;
+			</div>
+			<div class="cir" id="cir2">&nbsp;
+			</div>
+			<div class="cir" id="cir3">&nbsp;
+			</div>
+			<div class="cir" id="cir4">&nbsp;
+			</div>
+			<div class="cir" id="cir5">&nbsp;
+			</div>
+			<div class="cir" id="cir6">&nbsp;
+			</div>
+			<div class="cir" id="cir7">&nbsp;
+			</div>
+			<div class="cir" id="cir8">&nbsp;
+			</div>
+			<div class="cir" id="cir9">&nbsp;
+			</div>
+		</div>
+		
+		<script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+		//导入在线jQuery包
+		<script>
+		count =1;
+		function change()
+		{
+			if(count==10) 
+			{
+				count=0;
+				var boo = 1;
+			}
+			else{
+				var boo=0;
+			}
+			var picno = ["7.jpg","3.jpg","4.jpg","5.jpg","6.jpg","2.jpg","8.jpg","9.jpg","10.jpg","11.jpg"];
+			var	setback="background-image: url(img/"+picno[count]+")";
+			$("#picdiv").attr("style",setback);
+			console.log("ok");
+			var cid = ["#cir0","#cir1","#cir2","#cir3","#cir4","#cir5","#cir6","#cir7","#cir8","#cir9"]
+			if(boo==1)
+			{
+				$(cid[0]).attr("style","background-color: dimgrey;")
+				$(cid[9]).attr("style","background-color: white;")
+			}
+			else
+			{
+			$(cid[count]).attr("style","background-color: dimgrey;")
+			$(cid[count-1]).attr("style","background-color: white;")
+			}
+		count++;
+	}
+		function run()
+		{
+			setInterval(change,1000);
+		}
+		</script>
+		
+	</body>
+	
+</html>

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+	</head>
+	<body>
+		<script>
+		function J(nu)
+		{
+	
+			var res=" ";
+			if(isNaN(nu)) 
+			res="请输入整数数字";
+			
+			else if(nu<2) 
+			res="请输入大于2的整数";
+			
+			else{
+				res="是质数"
+				var i =2;
+				for(i=2;i<nu;++i)
+				{
+					if(nu%i == 0) 
+					{
+						res="不是质数"
+						break;
+					}
+				}
+			}
+			return res;
+		}
+		while(true)
+		{
+			var testnu = prompt("请输入要检测的数字");
+			if(testnu=="Q") break;
+			if(testnu==null) break;
+			alert(J(testnu));
+		}
+		</script>
+	</body>
+</html>

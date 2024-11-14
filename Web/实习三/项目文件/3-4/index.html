@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<style>
+		#div1{
+			display: flex;
+			flex-direction: column;
+			margin: auto;
+			
+		}
+		#div2{
+			display: flex;
+			flex-direction: column;
+			margin: auto;
+		}
+		#main{
+			height: 400px;
+			width: 400px;
+			margin: auto;
+		}
+		#word1{
+			height: 70px;
+			margin: 10px;
+		}
+		
+		h2{
+			margin: auto;
+		}
+		body{
+			border-style: solid;
+			border-color: black;
+			border-width: thin;
+		}
+		</style>
+	</head>
+	<body>
+		<div id="main">
+		<div id="div1">
+		<h2>判断回文词</h2>	
+		<input type='text' name="word1" id="word1" placeholder="填入待判断单词">
+		</div>
+		<div id="div2">
+			<button onclick="checkPalindrome()">确定</button>
+		</div>
+		</div>
+		<script>
+		function checkPalindrome()
+		{
+			var str = document.getElementById("word1").value;
+			var arr = Array.from(str);
+			var i=0;
+
+			for(i=0;i<(str.length/2);++i)
+			{
+				if(arr[i] != arr[str.length-i-1])
+				{
+					alert("NO");
+					return;
+				}
+				
+			}
+			alert("YES");
+			return;
+		}
+		</script>
+	</body>
+</html>

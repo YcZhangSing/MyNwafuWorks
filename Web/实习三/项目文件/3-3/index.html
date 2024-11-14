@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<style>
+		#div1{
+			display: flex;
+			flex-direction: column;
+			margin: auto;
+			
+		}
+		#div2{
+			display: flex;
+			flex-direction: column;
+			margin: auto;
+		}
+		#main{
+			height: 400px;
+			width: 400px;
+			margin: auto;
+		}
+		#word1{
+			height: 70px;
+			margin: 10px;
+		}
+		#word2{
+			height: 70px;
+			margin: 10px;
+		}
+		h2{
+			margin: auto;
+		}
+		body{
+			border-style: solid;
+			border-color: black;
+			border-width: thin;
+		}
+		</style>
+	</head>
+	<body>
+		<div id="main">
+		<div id="div1">
+		<h2>判断变位词</h2>	
+		<input type='text' name="word1" id="word1" placeholder="填入单词1：">
+		<input type='text' name="word2" id="word2" placeholder="填入单词2：">
+		</div>
+		<div id="div2">
+			<button onclick="comfclic()">确定</button>
+		</div>
+		</div>
+		<script>
+		function comfclic()
+		{
+			var w1 = document.getElementById("word1").value;
+			var w2 = document.getElementById("word2").value;
+			if(w1==null || w2 ==null) 
+			{
+				alert("请输入单词后再单击确定");
+				return ;
+			}
+			var arr1 = [24];
+			var arr2 = [24];
+			var i =0;
+			for(i=0;i<24;++i)
+			{
+				arr1[i]=0;
+				arr2[i]=0;
+			}
+			var aw1 = Array.from(w1);
+			var aw2 = Array.from(w2);
+			// for(i=0;i<aw1.length;++i)
+			// {
+			// 	console.log(aw1[i]+" ");
+			// }
+			
+			if(aw1.length != aw2.length)
+			{
+				alert("不是！");
+				return;
+			}
+			for(i=0;i<aw1.length;++i)
+			{
+				arr1[aw1[i].charCodeAt()-'a'.charCodeAt()]=arr1[aw1[i].charCodeAt()-'a'.charCodeAt()]+1;
+				arr2[aw2[i].charCodeAt()-'a'.charCodeAt()]=arr2[aw2[i].charCodeAt()-'a'.charCodeAt()]+1;
+			}
+			for(i=0;i<24;++i)
+			{
+				if(arr1[i]!=arr2[i])
+				{
+					alert("不是！");
+					return;
+				}
+			}
+			alert("是！");
+			return;
+		}
+		</script>
+	</body>
+</html>
