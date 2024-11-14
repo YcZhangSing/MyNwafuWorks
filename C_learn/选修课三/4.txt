@@ -1,0 +1,66 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+class student{
+    public:
+    string number;
+    string name;
+    int result;
+    student(string a,string b,int c) : number(a),name(b),result(c) {}
+    student(){}
+    void print()
+    {
+        cout<<number<<" "<<name<<" "<<result<<endl;
+    }
+};
+
+bool cmpnumber(student a,student b)
+{
+
+    return a.number<b.number;
+}
+
+bool cmpname(student a,student b)
+{
+    if(a.name==b.name) return a.number<b.number;
+    return a.name<=b.name;
+}
+
+bool cmpresult(student a,student b)
+{
+    if(a.result==b.result) return a.number<b.number;
+    return a.result<=b.result;
+}
+    
+inline void Mysort(student a[],int len,int n)
+{
+    switch(n){
+        case 1:
+            sort(a,a+len,cmpnumber);
+            break;
+        case 2:
+            sort(a,a+len,cmpname);
+            break;
+        case 3:
+            sort(a,a+len,cmpresult);
+            break;
+    }
+    return;
+}
+
+int main()
+{
+    int n,judge;
+    cin>>n>>judge;
+    student students[n];
+    int c;
+    string a,b;
+    for(int i=0;i<n;i++)
+    {
+        cin>>a>>b>>c;
+        students[i]=student(a,b,c);
+    }
+    Mysort(students,n,judge);
+    for(int i=0;i<n;i++) students[i].print();
+    return 0;
+}

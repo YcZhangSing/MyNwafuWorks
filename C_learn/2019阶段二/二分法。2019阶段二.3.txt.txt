@@ -1,0 +1,30 @@
+#include<stdio.h>
+#include<stdlib.h>
+double BiRoot(double(*fun)(double),double a,double b)
+{
+        double tem=0,t=0;
+        if(a>b)
+        {
+                tem=a;
+                a=b;
+                b=tem;
+        }
+
+        if(fun(a)*fun(b) >0)
+        {
+                printf("error! a,b have the same sign.\n");
+                exit(1);
+        }
+
+        for(t=(a+b)/2;;)
+        {
+                t=(a+b)/2;
+                if(fun(t)<0.000001 && fun(t)>-0.000001) break;
+                i((fun(a)*fun(t)>0)) a=t;
+                else b=t;
+
+        }
+
+        return t;
+
+}

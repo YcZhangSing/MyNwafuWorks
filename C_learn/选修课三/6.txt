@@ -1,0 +1,62 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+int main()
+{
+    int wheel[4][2]={{1,0},{0,1},{-1,0},{0,-1}};
+    int mg[100][100];
+    int e_x,e_y,f_x,f_y;
+    queue<int> ListX;
+    queue<int> ListY;
+    queue<int> num;
+
+    int sum;
+    bool judge=false;
+    int n,m;
+    cin>>n>>m;
+    for(int i=0;i<n;i++)
+    {
+        for(int j=0;j<m;j++)
+        {
+            cin>>mg[i][j];
+            if(mg[i][j]==4)
+                mg[i][j]=0,e_x=i,e_y=j;
+            if(mg[i][j]==3)
+                mg[i][j]=1,f_x=i,f_y=j;
+        }
+    }
+    ListX.push(f_x);
+    ListY.push(f_y);
+    num.push(0);
+    while(!ListX.empty())
+    {
+        int n_x=ListX.front();
+        int n_y=ListY.front();
+        int n_num=num.front();
+        ListX.pop();
+        ListY.pop();
+        num.pop();
+        if(n_x==e_x && n_y==e_y) {
+            sum=n_num;
+            judge=true;
+            break;
+        }
+        for(int i=0;i<4;i++)
+        {
+            if(mg[n_x+wheel[i][0]][n_y+wheel[i][1]]==1) ;
+            else if(n_x+wheel[i][0]>=n || n_y+wheel[i][1]>=m || n_x+wheel[i][0]<0 || n_y+wheel[i][1]<0) ;
+            else
+            {
+                mg[n_x+wheel[i][0]][n_y+wheel[i][1]]=1;
+                ListX.push(n_x+wheel[i][0]);
+                ListY.push(n_y+wheel[i][1]);
+                num.push(n_num+1);
+            }
+        }
+
+    }
+    if(judge) cout<<sum;
+    else cout<<"unreachable";
+    return 0;
+
+}

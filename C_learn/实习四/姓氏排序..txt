@@ -1,0 +1,28 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+int compare(const void *a,const void *b)
+{
+        char* pa =(char*)a;
+        char*pb = (char*)b;
+
+        return strcmp(pa,pb);
+}
+
+int main()
+{
+        char a[10][10]={0};
+
+        int i=0,j=0;
+        for(i=0;i<10;i++)
+        {
+                gets(a[i]);
+        }
+
+        qsort(a,10,10,compare);
+
+       	for(i=0;i<10;i++)
+		printf("%-s\n",a[i]);
+ 
+        return 0;
+}
