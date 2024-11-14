@@ -1,0 +1,16 @@
+<RCC>
+    <qresource prefix="/icons">
+        <file>icons/add.png</file>
+        <file>icons/e.png</file>
+        <file>icons/edit.png</file>
+        <file>icons/email.png</file>
+        <file>icons/manage.ico</file>
+        <file>icons/search.png</file>
+        <file>icons/yes.png</file>
+        <file>icons/cancel.png</file>
+        <file>icons/close.png</file>
+        <file>icons/delete.png</file>
+        <file>icons/resume.png</file>
+        <file>icons/search_.png</file>
+    </qresource>
+</RCC>
